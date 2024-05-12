@@ -7,13 +7,13 @@ marketeyes.github.io is a web application that provides periodic updates of the 
 ## Features
 
 Option Chain: 
-[] Call and Put Percentages for Volume and Open Interest 
-[] Hot Contracts
-[] Highest Volume 
-[] Highest Open Interest 
-[] Highest Open Interest Change
-[] Option Statistics 
-[] IV Dashboard 
-[] Gamma, Vanna, Charm Flows 
-[] Open Interest Probability Distributions 
-[] Net Premiums 
+- Call and Put Percentages for Volume and Open Interest 
+- Hot Contracts
+- Highest Volume 
+- Highest Open Interest 
+- Highest Open Interest Change
+- Option Statistics 
+- IV Dashboard 
+- Gamma, Vanna, Charm Flows 
+- Open Interest Probability Distributions 
+- Net Premiums 

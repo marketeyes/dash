@@ -1,9 +1,8 @@
 body {
-    background: darkgrey !important;
+    background: black !important;
 }
 
-
-html body {
-  background-color: rgba(0,0,0,1.00);
-
+/* On small screens, set height to 'auto' for the grid */
+@media screen and (max-width: 767px) {
+.row.content {height: auto;} 
 }

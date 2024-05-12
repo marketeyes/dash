@@ -14,11 +14,13 @@ const gridOptions = {
         field: 'stock',
         sortable: true,
         headerName: 'Stock',
-        // valueFormatter: {'function': ' "$" + params.value.toUpperCase()'} // Original line (commented out)
-
         valueFormatter: function(params) {
           return "$" + params.value.toUpperCase();
-        }
+        },
+        maxWidth: 125,
+        pinned: 'left',
+        lockPinned: true,
+        cellClass: 'lock-pinned'
     },
     {
         field: 'total_vol',
@@ -26,7 +28,8 @@ const gridOptions = {
         headerName: 'Total Volume',
         valueFormatter: function(params) {
           return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
+        },
+        maxWidth: 165,
     },
     {
         field: 'avg_vol',
@@ -34,7 +37,8 @@ const gridOptions = {
         headerName: 'Avg Volume (30D)',
         valueFormatter: function(params) {
           return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
+        },
+        maxWidth: 165,
     },
     {
         field: 'call_vol_pct',
@@ -44,6 +48,7 @@ const gridOptions = {
           return params.value.toFixed(2) + "%";
         },
         cellRenderer: 'agAnimateShowChangeCellRenderer',
+        maxWidth: 100,
     },
     {
         field: 'call_vol_pct_chng',
@@ -55,7 +60,8 @@ const gridOptions = {
         },
         cellStyle: function(params) {
           return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
-        }
+        },
+        maxWidth: 155,
     },
     {
         field: 'put_vol_pct',
@@ -65,6 +71,7 @@ const gridOptions = {
           return params.value.toFixed(2) + "%";
         },
         cellRenderer: 'agAnimateShowChangeCellRenderer',
+        maxWidth: 100,
     },
     {
         field: 'put_vol_pct_chng',
@@ -76,7 +83,8 @@ const gridOptions = {
         },
         cellStyle: function(params) {
           return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
-        }
+        },
+        maxWidth: 155,
     }
     ]
   ,

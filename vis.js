@@ -101,8 +101,7 @@ fetch("data/vol_cp.json")
   .then((response) => response.json())
   .then((data) => gridApi.setGridOption("rowData", data));
 
-
-
+  
 // Return the stocks that have a higher total volume than the average volume
 function getHighVolumeStocks() {
   // Get the rowData from the grid

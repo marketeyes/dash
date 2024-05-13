@@ -12,15 +12,29 @@
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
 </head>
-<body>
-    <div class="container-fluid p-5 bg-primary text-white text-center">
+<body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="100">
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+        <div class="container-fluid">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#section1">Welcome</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#section2">Volume</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#section3">OI </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div id="section1" class="mt-4 p-5 bg-primary text-white rounded" style="padding:60%; height:600px;">
         <h1>MarketEyes</h1>
         <p>Open-Sourcing Options data for FREE</p> 
-      </div>
-        
-    </div>
+    </div>  
     <!-- Table Area  -->
-    <div class="container-fluid mt-5">
+    <div id="section2" class="container-fluid mt-5" style="padding:1%">
         <div class="row">
             <div class="col-md-4 border border-5" style="background-color: gray;">
                 <h2 class="text-center"> Volume Flows Today</h2>
@@ -32,7 +46,28 @@
                 </div>
             </div>
             <div class="col-md-8"><div id="volume_grid" style="height: 600px; width: 100%;" class="ag-theme-alpine-dark"></div></div>
-        </div>
+    </div>
+    </div>
+    <div id="section3" class="container-fluid mt-5" style="padding:1%">
+        <div class="row">
+            <div class="col-md-4 border border-5" style="background-color: gray;">
+                <h2 class="text-center"> Open Interest Flows Today</h2>
+                <div class="btn-group">
+                    <button id="highoi" class="btn btn-primary" onclick="getHighOpenInterestStocks()">OI > Avg</button>
+                    <button id="calloi" class="btn btn-primary" onclick="sortcalloi()">Call Change</button>
+                    <button id="putoi" class="btn btn-primary" onclick="sortputoi()">Put Change</button>
+                    <button id="resetoi" class="btn btn-primary" onclick="resetOpenInterest()">Reset</button>
+                </div>
+            </div>
+            <div class="col-md-8"><div id="oi_grid" style="height: 600px; width: 100%;" class="ag-theme-alpine-dark"></div></div>
+    </div>
+    </div>
+    <div id="section4" class="container-fluid mt-5" style="padding:1%">
+        <div class="col-md-4 border border-5" style="background-color: gray; height:600px;">
+
+    </div>
+
+
     
 </body>
 <script src="vis.js"></script>

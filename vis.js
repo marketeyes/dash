@@ -94,18 +94,17 @@ const gridOptions = {
 };
 
 // Create Grid: Create new grid within the #myGrid div, using the Grid Options object
-gridApi = agGrid.createGrid(document.querySelector("#volume_grid"), gridOptions);
+volGrid = agGrid.createGrid(document.querySelector("#volume_grid"), gridOptions);
 
 // Fetch Remote Data
 fetch("data/vol_cp.json")
-  .then((response) => response.json())
-  .then((data) => gridApi.setGridOption("rowData", data));
+.then((response) => response.json())
+.then((data) => volGrid.setGridOption("rowData", data));
 
-  
 // Return the stocks that have a higher total volume than the average volume
 function getHighVolumeStocks() {
   // Get the rowData from the grid
-  const rowData = gridApi.getGridOption("rowData");
+  const rowData = volGrid.getGridOption("rowData");
   // Filter the rowData to only include stocks with a higher total volume than the average volume
   const highVolumeStocks = rowData.filter((stock) => stock.total_vol > 2 * stock.avg_vol);
   // Print the stocks to the object with id = stocks
@@ -113,21 +112,101 @@ function getHighVolumeStocks() {
     const stockNames = highVolumeStocks.map(stock => "$" + stock.stock.toUpperCase());
     // document.getElementById("highvol").innerText = stockNames.join(", ");
     // Update the grid to show only the high volume stocks
-    gridApi.setGridOption("rowData", highVolumeStocks);
+    volGrid.setGridOption("rowData", highVolumeStocks);
     return stockNames;
 }
 
 function sortcallvol(){
-    gridApi.applyColumnState({state: [{colId: 'call_vol_pct_chng',sort: 'desc',}],defaultState: { sort: null }});
+    volGrid.applyColumnState({state: [{colId: 'call_vol_pct_chng',sort: 'desc',}],defaultState: { sort: null }});
 }
 
 function sortputvol(){
-    gridApi.applyColumnState({state: [{colId: 'put_vol_pct_chng',sort: 'desc',}],defaultState: { sort: null }});
+    volGrid.applyColumnState({state: [{colId: 'put_vol_pct_chng',sort: 'desc',}],defaultState: { sort: null }});
 }
 
 function resetVolume(){
     fetch("data/vol_cp.json")
         .then((response) => response.json())
-        .then((data) => gridApi.setGridOption("rowData", data));
+        .then((data) => volGrid.setGridOption("rowData", data));
         // document.getElementById("resetvol").innerText = "";
 }
+
+
+const columnDefsOi = [
+    {
+      field: 'stock',
+      sortable: true,
+      headerName: 'Stock',
+      valueFormatter: function(params) {
+        return "$" + params.value.toUpperCase();
+      }
+    },
+    {
+      field: 'total_oi',
+      sortable: true,
+      headerName: 'Total Open Interest',
+      valueFormatter: function(params) {
+        return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      },
+      filter: "agNumberColumnFilter",
+      filterValueGetter: function(params) {
+        return params.value; // Removed extra parenthesis
+      },
+      filterParams: {
+        filterOptions: ['lessThan', 'greaterThan', 'inRange']
+      },
+      editable: true
+    },
+    {
+      field: 'call_oi_pct',
+      sortable: true,
+      headerName: 'Call %',
+      valueFormatter: function(params) {
+        return params.value.toFixed(2) + "%";
+      }
+    },
+    {
+      field: 'call_oi_pct_chng',
+      sortable: true,
+      headerName: '🟢Change',
+      hide: false,
+      valueFormatter: function(params) {
+        return params.value > 0 ? "↑ " + round(100 * params.value) + "%" : "↓ " + round(100 * params.value) + "%";
+      },
+      cellStyle: function(params) {
+        return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
+      }
+    },
+    {
+      field: 'put_oi_pct',
+      sortable: true,
+      headerName: 'Put %',
+      valueFormatter: function(params) {
+        return round(100 * params.value) + "%";
+      }
+    },
+    {
+      field: 'put_oi_pct_chng',
+      sortable: true,
+      headerName: 'Change',
+      hide: false,
+      valueFormatter: function(params) {
+        return params.value > 0 ? "↑ " + round(100 * params.value) + "%" : "↓ " + round(100 * params.value) + "%";
+      },
+      cellStyle: function(params) {
+        return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
+      }
+    }
+  ];
+
+  
+const grid_options_oi = {
+    rowData: [],
+    columnDefs: columnDefsOi
+    };
+
+
+oiGrid = agGrid.createGrid(document.querySelector("#oi_grid"), grid_options_oi);
+fetch("data/oi_cp.json")
+    .then((response) => response.json())
+    .then((data) => oiGrid.setGridOption("rowData", data));

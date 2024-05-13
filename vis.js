@@ -1,6 +1,6 @@
 // 
 // Grid API: Access to Grid API methods
-let gridApi;
+// let gridApi;
 
 // Rounding Function 
 function round(num) {
@@ -54,19 +54,6 @@ const gridOptions = {
         maxWidth: 100,
     },
     {
-        field: 'call_vol_pct_chng',
-        sortable: true,
-        headerName: '🟢CHNG',
-        hide: false,
-        valueFormatter: function(params) {
-          return params.value > 0 ? "↑ " + round(100 * params.value) + "%" : "↓ " + round(100 * params.value) + "%";
-        },
-        cellStyle: function(params) {
-          return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
-        },
-        maxWidth: 155,
-    },
-    {
         field: 'put_vol_pct',
         sortable: true,
         headerName: 'Put %',
@@ -75,6 +62,19 @@ const gridOptions = {
         },
         cellRenderer: 'agAnimateShowChangeCellRenderer',
         maxWidth: 100,
+    },
+    {
+      field: 'call_vol_pct_chng',
+      sortable: true,
+      headerName: '🟢CHNG',
+      hide: false,
+      valueFormatter: function(params) {
+        return params.value > 0 ? "↑ " + round(100 * params.value) + "%" : "↓ " + round(100 * params.value) + "%";
+      },
+      cellStyle: function(params) {
+        return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
+      },
+      maxWidth: 155,
     },
     {
         field: 'put_vol_pct_chng',
@@ -99,7 +99,8 @@ volGrid = agGrid.createGrid(document.querySelector("#volume_grid"), gridOptions)
 // Fetch Remote Data
 fetch("data/vol_cp.json")
 .then((response) => response.json())
-.then((data) => volGrid.setGridOption("rowData", data));
+.then((data) => volGrid.setGridOption("rowData", data))
+.then(() => volGrid.applyColumnState({state: [{colId: 'total_vol',sort: 'desc',}],defaultState: { sort: null }}));
 
 // Return the stocks that have a higher total volume than the average volume
 function getHighVolumeStocks() {
@@ -113,6 +114,7 @@ function getHighVolumeStocks() {
     // document.getElementById("highvol").innerText = stockNames.join(", ");
     // Update the grid to show only the high volume stocks
     volGrid.setGridOption("rowData", highVolumeStocks);
+    volGrid.applyColumnState({state: [{colId: 'total_vol',sort: 'desc',}],defaultState: { sort: null }});
     return stockNames;
 }
 
@@ -139,7 +141,11 @@ const columnDefsOi = [
       headerName: 'Stock',
       valueFormatter: function(params) {
         return "$" + params.value.toUpperCase();
-      }
+      },
+      pinned: 'left',
+      lockPinned: true,
+      cellClass: 'lock-pinned',
+      maxWidth: 125,
     },
     {
       field: 'total_oi',
@@ -155,15 +161,36 @@ const columnDefsOi = [
       filterParams: {
         filterOptions: ['lessThan', 'greaterThan', 'inRange']
       },
-      editable: true
+      editable: true,
+      maxWidth: 165,
+    },
+    {
+      field: 'avg_oi',
+      sortable: true,
+      headerName: 'AvgOI (30D)',
+      valueFormatter: function(params) {
+        return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      },
+      maxWidth: 165,
+      hide: true,
     },
     {
       field: 'call_oi_pct',
       sortable: true,
       headerName: 'Call %',
       valueFormatter: function(params) {
-        return params.value.toFixed(2) + "%";
-      }
+        return round(100 * params.value) + "%";
+      },
+      maxWidth: 125,
+    },
+    {
+      field: 'put_oi_pct',
+      sortable: true,
+      headerName: 'Put %',
+      valueFormatter: function(params) {
+        return round(100 * params.value) + "%";
+      },
+      maxWidth: 125,
     },
     {
       field: 'call_oi_pct_chng',
@@ -175,27 +202,21 @@ const columnDefsOi = [
       },
       cellStyle: function(params) {
         return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
-      }
-    },
-    {
-      field: 'put_oi_pct',
-      sortable: true,
-      headerName: 'Put %',
-      valueFormatter: function(params) {
-        return round(100 * params.value) + "%";
-      }
+      },
+      maxWidth: 155,
     },
     {
       field: 'put_oi_pct_chng',
       sortable: true,
-      headerName: 'Change',
+      headerName: '🔴Change',
       hide: false,
       valueFormatter: function(params) {
         return params.value > 0 ? "↑ " + round(100 * params.value) + "%" : "↓ " + round(100 * params.value) + "%";
       },
       cellStyle: function(params) {
         return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
-      }
+      },
+      maxWidth: 155,
     }
   ];
 

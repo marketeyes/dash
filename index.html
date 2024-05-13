@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My Webpage</title>
+    <title>MarketEyes</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,6 +25,12 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#section3">OI </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#section4">Contracts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#section5">Expected Moves</a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -35,39 +41,54 @@
     </div>  
     <!-- Table Area  -->
     <div id="section2" class="container-fluid mt-5" style="padding:1%">
-        <div class="row">
-            <div class="col-md-4 border border-5" style="background-color: gray;">
-                <h2 class="text-center"> Volume Flows Today</h2>
-                <div class="btn-group">
-                    <button id="highvol" class="btn btn-primary" onclick="getHighVolumeStocks()">Volume > Avg</button>
-                    <button id="callvol" class="btn btn-primary" onclick="sortcallvol()">Call Change</button>
-                    <button id="putvol" class="btn btn-primary" onclick="sortputvol()">Put Change</button>
-                    <button id="resetvol" class="btn btn-primary" onclick="resetVolume()">Reset</button>
-                </div>
+        <div class="text-center text-white" style="padding:1%">
+            <h2 class="text-center"> Volume Flows Today</h2>
+            <div class="btn-group">
+                <button id="highvol" class="btn btn-primary" onclick="getHighVolumeStocks()">Volume > Avg</button>
+                <button id="callvol" class="btn btn-primary" onclick="sortcallvol()">Call Change</button>
+                <button id="putvol" class="btn btn-primary" onclick="sortputvol()">Put Change</button>
+                <button id="resetvol" class="btn btn-primary" onclick="resetVolume()">Reset</button>
             </div>
-            <div class="col-md-8"><div id="volume_grid" style="height: 600px; width: 100%;" class="ag-theme-alpine-dark"></div></div>
-    </div>
+        </div>
+        <div id="volume_grid" style="height: 600px; width: 100%;" class="ag-theme-alpine-dark"></div>
     </div>
     <div id="section3" class="container-fluid mt-5" style="padding:1%">
-        <div class="row">
-            <div class="col-md-4 border border-5" style="background-color: gray;">
-                <h2 class="text-center"> Open Interest Flows Today</h2>
-                <div class="btn-group">
-                    <button id="highoi" class="btn btn-primary" onclick="getHighOpenInterestStocks()">OI > Avg</button>
-                    <button id="calloi" class="btn btn-primary" onclick="sortcalloi()">Call Change</button>
-                    <button id="putoi" class="btn btn-primary" onclick="sortputoi()">Put Change</button>
-                    <button id="resetoi" class="btn btn-primary" onclick="resetOpenInterest()">Reset</button>
-                </div>
+        <div class="text-center text-white" style="padding:1%">
+            <h2 class="text-center"> Open Interest Flows Today</h2>
+            <div class="btn-group">
+                <button id="highoi" class="btn btn-primary" onclick="getHighOpenInterestStocks()">OI > Avg</button>
+                <button id="calloi" class="btn btn-primary" onclick="sortcalloi()">Call Change</button>
+                <button id="putoi" class="btn btn-primary" onclick="sortputoi()">Put Change</button>
+                <button id="resetoi" class="btn btn-primary" onclick="resetOpenInterest()">Reset</button>
             </div>
-            <div class="col-md-8"><div id="oi_grid" style="height: 600px; width: 100%;" class="ag-theme-alpine-dark"></div></div>
+        </div>
+        <div id="oi_grid" style="height: 600px; width: 100%;" class="ag-theme-alpine-dark"></div>
     </div>
-    </div>
+
+
     <div id="section4" class="container-fluid mt-5" style="padding:1%">
-        <div class="col-md-4 border border-5" style="background-color: gray; height:600px;">
+        <!-- Contracts -->
+        <div class="text-center" style="padding:1%">
+            <h1 class="text-center text-white rounded">Contracts</h1>
+            <div class="btn-group">
+                <button id="% Movers" class="btn btn-primary" onclick="getPercentMovers()">% Movers</button>
+                <button id="Volume Movers" class="btn btn-primary" onclick="getVolumeMovers()">Volume Movers</button>
+                <button id="OI Movers" class="btn btn-primary" onclick="getOIMovers()">OI Movers</button>
+                <button id="Inflows" class="btn btn-primary" onclick="getVOIMovers()">Inflows</button>
+            </div>
+        </div>
+        <div id="contracts_grid" style="height: 600px; width: 100%;" class="ag-theme-alpine-dark"></div>
+    </div>
+    <div id="section5" class="container-fluid mt-5" style="padding:1%">
+        <div class="text-center" style="padding:1%">
+            <h1 class="text-center text-white rounded">Expected Moves</h1>
+        </div>
+        <div id="em_grid" style="height: 600px; width: 100%;" class="ag-theme-alpine-dark"></div>
 
     </div>
-
 
     
 </body>
 <script src="vis.js"></script>
+<script src="em.js"></script>
+<script src="lottos.js"></script>

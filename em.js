@@ -9,7 +9,11 @@ const columndefsEM = [
       sortable: true,
       valueFormatter: function(params) {
         return "$" + params.value.toUpperCase();
-      }
+      },
+      pinned: "left",
+      lockPinned: true,
+      cellClass: 'lock-pinned',
+      maxWidth: 100,
     },
     {
       field: 'expiry',

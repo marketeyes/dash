@@ -167,12 +167,12 @@ const columnDefsOi = [
     {
       field: 'avg_oi',
       sortable: true,
-      headerName: 'AvgOI (30D)',
+      headerName: 'AvgOI(30D)',
       valueFormatter: function(params) {
-        return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return params.value !== null ? params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "-";
       },
       maxWidth: 165,
-      hide: true,
+      hide: false,
     },
     {
       field: 'call_oi_pct',

@@ -163,6 +163,6 @@ function getVOIMovers(){
         .then(response => response.json())
         .then((cdata) => lottosGrid.setGridOption('rowData', cdata))
         .then(() => lottosGrid.applyColumnState(
-            {state: [{colId:'voi', sort:'desc'}], defaultState: {sort: null}})
+            {state: [{colId:'volume', sort:'desc'}], defaultState: {sort: null}})
         );
 }

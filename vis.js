@@ -2,7 +2,10 @@
 // Grid API: Access to Grid API methods
 let gridApi;
 
-// Row Data Interface
+// Rounding Function 
+function round(num) {
+    return +(Math.round(num + "e+2")  + "e-2");
+}
 
 // Grid Options: Contains all of the grid configurations
 const gridOptions = {
@@ -45,7 +48,7 @@ const gridOptions = {
         sortable: true,
         headerName: 'Call %',
         valueFormatter: function(params) {
-          return params.value.toFixed(2) + "%";
+            return round(100 * params.value) + "%";
         },
         cellRenderer: 'agAnimateShowChangeCellRenderer',
         maxWidth: 100,
@@ -56,7 +59,7 @@ const gridOptions = {
         headerName: '🟢CHNG',
         hide: false,
         valueFormatter: function(params) {
-          return params.value > 0 ? "↑ " + params.value.toFixed(2) + "%" : "↓ " + params.value.toFixed(2) + "%";
+          return params.value > 0 ? "↑ " + round(100 * params.value) + "%" : "↓ " + round(100 * params.value) + "%";
         },
         cellStyle: function(params) {
           return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
@@ -68,7 +71,7 @@ const gridOptions = {
         sortable: true,
         headerName: 'Put %',
         valueFormatter: function(params) {
-          return params.value.toFixed(2) + "%";
+          return round(100 * params.value) + "%";
         },
         cellRenderer: 'agAnimateShowChangeCellRenderer',
         maxWidth: 100,
@@ -76,10 +79,10 @@ const gridOptions = {
     {
         field: 'put_vol_pct_chng',
         sortable: true,
-        headerName: 'CHNG',
+        headerName: '🔴CHNG',
         hide: false,
         valueFormatter: function(params) {
-          return params.value > 0 ? "↑ " + params.value.toFixed(2) + "%" : "↓ " + params.value.toFixed(2) + "%";
+            return params.value > 0 ? "↑ " +  round(100 * params.value) + "%" : "↓ " + round(100 * params.value) + "%";
         },
         cellStyle: function(params) {
           return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
@@ -97,3 +100,35 @@ gridApi = agGrid.createGrid(document.querySelector("#volume_grid"), gridOptions)
 fetch("data/vol_cp.json")
   .then((response) => response.json())
   .then((data) => gridApi.setGridOption("rowData", data));
+
+
+
+// Return the stocks that have a higher total volume than the average volume
+function getHighVolumeStocks() {
+  // Get the rowData from the grid
+  const rowData = gridApi.getGridOption("rowData");
+  // Filter the rowData to only include stocks with a higher total volume than the average volume
+  const highVolumeStocks = rowData.filter((stock) => stock.total_vol > 2 * stock.avg_vol);
+  // Print the stocks to the object with id = stocks
+    // return only the stock name; add $ and convert to uppercase
+    const stockNames = highVolumeStocks.map(stock => "$" + stock.stock.toUpperCase());
+    // document.getElementById("highvol").innerText = stockNames.join(", ");
+    // Update the grid to show only the high volume stocks
+    gridApi.setGridOption("rowData", highVolumeStocks);
+    return stockNames;
+}
+
+function sortcallvol(){
+    gridApi.applyColumnState({state: [{colId: 'call_vol_pct_chng',sort: 'desc',}],defaultState: { sort: null }});
+}
+
+function sortputvol(){
+    gridApi.applyColumnState({state: [{colId: 'put_vol_pct_chng',sort: 'desc',}],defaultState: { sort: null }});
+}
+
+function resetVolume(){
+    fetch("data/vol_cp.json")
+        .then((response) => response.json())
+        .then((data) => gridApi.setGridOption("rowData", data));
+        // document.getElementById("resetvol").innerText = "";
+}

@@ -28,8 +28,8 @@ function candleChart(data, title, gl, rl){
         color: {domain: [-1, 0, 1], range: ["#e41a1c", "currentColor", "#4daf4a"]},
         marks: [
             Plot.frame(),
-            Plot.ruleY(gl, {stroke: "green", strokeWidth: 5}),
-            Plot.ruleY(rl, {stroke: "red", strokeWidth: 5}),
+            Plot.ruleY(gl, {stroke: "green", strokeWidth: 3, strokeDasharray: "3,2"}),
+            Plot.ruleY(rl, {stroke: "red", strokeWidth: 3, strokeDasharray: "3,2"}),
             // Plot.ruleY(data, Plot.selectFirst({y: d => d.Open,stroke: 'grey',strokeDasharray: "3,2",})),
             Plot.ruleX(data, {
                 x: "Date",
@@ -47,7 +47,7 @@ function candleChart(data, title, gl, rl){
             }),
             Plot.crosshairY(data, {x: "Date", y: "Close", textFill:'black'}),
             // Plot.bollingerY(data, {x: "Date", y: "Close", stroke: "none", n: 4, k: 2}),
-            Plot.linearRegressionY(data, {x: "Date", y: "Close", stroke: "grey", inset: 10}),
+            // Plot.linearRegressionY(data, {x: "Date", y: "Close", stroke: "grey", inset: 10}),
           ]
     
       })

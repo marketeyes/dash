@@ -65,7 +65,6 @@
 <!-- Page Header -->
     <div id="section1" class="page-header container-fluid py-5 bg-primary text-center rounded text-white", style="padding:5%; height:">
         <h1>MarketEyes</h1>
-        <p>This Is the LOCAL version of the webpage.</p> 
     </div>  
 
     <!-- Market Overview Section -->
@@ -78,14 +77,24 @@
                 <div class="col-md-12">
                     <div class="card bg-secondary text-white mb-4">
                         <div class="card-body">
-                            <h5 class="card-title">Active Volume
-                                <button id="tape2" class="btn btn-primary mx-2" onclick="active_volume_tickertape()">Vol</button>
-                            <section class="scroller__wrapper">
+                            <h5 class="card-title text-center">
+                              <div class="btn-group me-2">
+                                <button id="tape2" class="btn btn-primary mx-0 " onclick="active_volume_tickertape()">Show Active Volume</button>
+                              </div>
+                              <section class="scroller__wrapper">
                                 <div class="scroller__container">
                                     <div id="vol_tape" class="scroller"></div>
                                 </div>
+                              </section>
                             </h5>
-                            </section>
+                            <div class="row">
+                                <div class="col-md-6 border">
+                                    <div id="o1" class="mb-4"></div>
+                                </div>
+                                <div class="col-md-6 border">
+                                    <div id="o2" class="mb-4"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -193,5 +202,5 @@
 <script src="src/s_em.js"></script>
 <script src="src/s_lotto.js"></script>
 <script src="src/s_candles.js"></script>
-<script src="src/s_app.js"></script>
+<script src="src/s_performance.js"></script>
 

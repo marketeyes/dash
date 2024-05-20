@@ -1,30 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MarketEyes</title>
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon_io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon_io/favicon-16x16.png">
-    <link rel="apple-touch-icon" href="images/favicon_io/apple-touch-icon-iphone-60x60.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="images/favicon_io/apple-touch-icon-ipad-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="images/favicon_io/apple-touch-icon-iphone-retina-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="images/favicon_io/apple-touch-icon-ipad-retina-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="images/favicon_io/apple-touch-icon.png">
-    <link rel="manifest" href="images/favicon_io/site.webmanifest">
+    <title>MarketEyes Local</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="images/logo/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/logo/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="images/logo/apple-touch-icon-iphone-60x60.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="images/logo/apple-touch-icon-ipad-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/logo/apple-touch-icon-iphone-retina-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="images/logo/apple-touch-icon-ipad-retina-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/logo/apple-touch-icon.png">
+    <link rel="manifest" href="images/logo/site.webmanifest">
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="tape.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <!-- <script src="./lib/d3.v5.min.js"></script> -->
+    <!-- <script src="./lib/obs.v2.79.js"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm"></script> -->
+    <script type="module" src="./lib/d3.js"></script>
+    <script type="module" src="./lib/plot.js"></script>
+    <script type="module" src="./lib/plotly.js"></script>
 </head>
 <body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="100">
-    <!-- NAVBAR -->
+<!-- NAVBAR -->
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">MarketEyes</a>
+          <a class="navbar-brand" href="#">
+            <img src='images/brand_logo.png' class="img-rounded" alt="MarketEyes" style="width: 150px; height: 50px;">
+          </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar" aria-controls="collapsibleNavbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -34,76 +43,155 @@
                 <a class="nav-link" href="#section1">Welcome</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#section2">Volume</a>
+                <a class="nav-link" href="#section1-1">Overview</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#section3">OI </a>
+                <a class="nav-link" href="#section2">Flows</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#section4">Contracts</a>
+                <a class="nav-link" href="#section3">Contracts </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#section5">Expected Moves</a>
+                <a class="nav-link" href="#section4">Pricing In</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#section5">Dash</a>
               </li>
             </ul>
           </div>
         </div>
       </nav>
-    
-    <div id="section1" class="mt-4 p-5 bg-primary text-white rounded" style="padding:60%; height:600px;">
+
+<!-- Page Header -->
+    <div id="section1" class="page-header container-fluid py-5 bg-primary text-center rounded text-white", style="padding:5%; height:">
         <h1>MarketEyes</h1>
-        <p>Open-Sourcing Options data for FREE</p> 
+        <p>This Is the LOCAL version of the webpage.</p> 
     </div>  
-    <!-- Table Area  -->
-    <div id="section2" class="container-fluid mt-5" style="padding:1%">
-        <div class="text-center text-white" style="padding:1%">
-            <h2 class="text-center"> Volume Flows Today</h2>
-            <div class="btn-group">
-                <button id="highvol" class="btn btn-primary" onclick="getHighVolumeStocks()">Volume > Avg</button>
-                <button id="callvol" class="btn btn-primary" onclick="sortcallvol()">Call Change</button>
-                <button id="putvol" class="btn btn-primary" onclick="sortputvol()">Put Change</button>
-                <button id="resetvol" class="btn btn-primary" onclick="resetVolume()">Reset</button>
+
+    <!-- Market Overview Section -->
+    <div id="section1-1" class="container-fluid bg-dark text-white rounded mt-5 p-5 bg-dark">
+        <h1 class="text-center">Market Overview</h1>
+
+        <!-- Scroller Content -->
+        <div id="overview-content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card bg-secondary text-white mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Active Volume
+                                <!-- <button id="tape2" class="btn btn-primary mx-2" onclick="active_volume_tickertape()">Vol</button> -->
+                            <section class="scroller__wrapper">
+                                <div class="scroller__container">
+                                    <div id="vol_tape" class="scroller"></div>
+                                </div>
+                            </h5>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div id="heatmap" class="mb-4"></div>
+                </div>
+                <div class="col-md-6">
+                    <div id="barchart" class="mb-4"></div>
+                </div>
             </div>
         </div>
-        <div id="volume_grid" style="height: 600px; width: 100%;" class="ag-theme-alpine-dark"></div>
-    </div>
-    <div id="section3" class="container-fluid mt-5" style="padding:1%">
-        <div class="text-center text-white" style="padding:1%">
-            <h2 class="text-center"> Open Interest Flows Today</h2>
+        <!-- Charts -->
+        <div class="row">
             <div class="btn-group">
-                <button id="highoi" class="btn btn-primary" onclick="getHighOpenInterestStocks()">OI > Avg</button>
-                <button id="calloi" class="btn btn-primary" onclick="sortcalloi()">Call Change</button>
-                <button id="putoi" class="btn btn-primary" onclick="sortputoi()">Put Change</button>
-                <button id="resetoi" class="btn btn-primary" onclick="resetOpenInterest()">Reset</button>
+                <button id="spy_candle" class="btn btn-primary" onclick="chartSPY()">SPY</button>
+                <button id="qqq_candle" class="btn btn-primary" onclick="chartQQQ()">QQQ</button>
+                <button id="iwm_candle" class="btn btn-primary" onclick="chartIWM()">IWM</button>
+                <button id="vxx_candle" class="btn btn-primary" onclick="chartVXX()">VXX</button>
             </div>
+            
         </div>
-        <div id="oi_grid" style="height: 600px; width: 100%;" class="ag-theme-alpine-dark"></div>
-    </div>
-
-
-    <div id="section4" class="container-fluid mt-5" style="padding:1%">
-        <!-- Contracts -->
-        <div class="text-center" style="padding:1%">
-            <h1 class="text-center text-white rounded">Contracts</h1>
-            <div class="btn-group">
-                <button id="% Movers" class="btn btn-primary" onclick="getPercentMovers()">% Movers</button>
-                <button id="Volume Movers" class="btn btn-primary" onclick="getVolumeMovers()">Volume Movers</button>
-                <button id="OI Movers" class="btn btn-primary" onclick="getOIMovers()">OI Movers</button>
-                <button id="Inflows" class="btn btn-primary" onclick="getVOIMovers()">Inflows</button>
-            </div>
-        </div>
-        <div id="contracts_grid" style="height: 600px; width: 100%;" class="ag-theme-alpine-dark"></div>
-    </div>
-    <div id="section5" class="container-fluid mt-5" style="padding:1%">
-        <div class="text-center" style="padding:1%">
-            <h1 class="text-center text-white rounded">Expected Moves</h1>
-        </div>
-        <div id="em_grid" style="height: 600px; width: 100%;" class="ag-theme-alpine-dark"></div>
-
-    </div>
         
-</body>
+        <div class="container-fluid">
+            <div class="row g-0">
+                <div id="p7-1" class="col-sm col-md-3 col-xs-2"></div>
+                <div id="p7-2" class="col-sm col-md-3 col-xs-2"></div>
+                <div id="p7-3" class="col-sm col-md-3 col-xs-2"></div>
+                <div id="p7-4" class="col-sm col-md-3 col-xs-2"></div>
+                <div id="p6" class="col-6-sm"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Flows Section -->
+    <div id="section2" class="container-fluid mt-5 p-5 bg-dark">
+        <h1 class="text-center text-white">Flows</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="text-center text-white mb-4">
+                    <div class="btn-group">
+                        <button id="highvol" class="btn btn-primary" onclick="getHighVolumeStocks()">Volume > Avg</button>
+                        <button id="callvol" class="btn btn-primary" onclick="sortcallvol()">Call Change</button>
+                        <button id="putvol" class="btn btn-primary" onclick="sortputvol()">Put Change</button>
+                        <button id="resetvol" class="btn btn-primary" onclick="resetVolume()">Reset</button>
+                    </div>
+                </div>
+                <div id="volume_grid" style="height: 600px; width: 100%;" class="ag-theme-alpine-dark"></div>
+            </div>
+            <div class="col-md-6">
+                <div class="text-center text-white mb-4">
+                    <div class="btn-group">
+                        <button id="highoi" class="btn btn-primary" onclick="getHighOpenInterestStocks()">OI > Avg</button>
+                        <button id="calloi" class="btn btn-primary" onclick="sortcalloi()">Call Change</button>
+                        <button id="putoi" class="btn btn-primary" onclick="sortputoi()">Put Change</button>
+                        <button id="resetoi" class="btn btn-primary" onclick="resetOpenInterest()">Reset</button>
+                    </div>
+                </div>
+                <div id="oi_grid" style="height: 600px; width: 100%;" class="ag-theme-alpine-dark"></div>
+            </div>
+        </div>
+    </div>
 
-<script src="s_cp.js"></script>
-<script src="s_em.js"></script>
-<script src="s_lotto.js"></script>
+<!--  Lottos -->
+<div id="section3" class="container-fluid py-5 bg-dark", style="padding:1%;">
+    <div class="text-center" style="padding:1%">
+      <h1 class="text-center text-white rounded">Lotto Flows</h1>
+      <div class="text-center text-white" style="padding:1%">
+        <div class="btn-group">
+          <button id="% Movers" class="btn btn-primary" onclick="getPercentMovers()">% Movers</button>
+          <button id="Volume Movers" class="btn btn-primary" onclick="getVolumeMovers()">Volume Movers</button>
+          <button id="OI Movers" class="btn btn-primary" onclick="getOIMovers()">OI Movers</button>
+          <button id="Inflows" class="btn btn-primary" onclick="getVOIMovers()">Inflows</button>
+        </div>
+      </div>
+      <div id="contracts_grid" style="height: 600px; width: 100%;" class="ag-theme-alpine-dark"></div>
+    </div>
+  </div>
+
+<!-- Expected Moves -->
+  <div id="section4" class="container-fluid py-5 bg-dark", style="padding:1%;">
+    <div class="text-center" style="padding:1%">
+      <h1 class="text-center text-white rounded">Expected Moves</h1>
+    </div>
+    <div id="em_grid" style="height: 600px; width: 100%;" class="ag-theme-alpine-dark">
+      </div>
+    </div>
+  </div>
+<!--  Yellow BG -->
+<div id="section5" class="container-fluid py-5 bg-dark", style="padding:1%;">
+</div>
+<!-- Light BG -->
+<div id="section6" class="container-fluid py-5 bg-dark", style="padding:1%;">
+  
+</div>  
+</div>
+
+<div class="mt-5 p-4  text-white text-center">
+    <p>Footer</p>
+  </div>
+</body>
+<script src="src/s_cp.js"></script>
+<script src="src/s_em.js"></script>
+<script src="src/s_lotto.js"></script>
+<script src="src/s_candles.js"></script>
+<script src="src/s_app.js"></script>
+

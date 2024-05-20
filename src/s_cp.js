@@ -379,6 +379,53 @@ async function active_volume_tickertape() {
 }
 
 // document.addEventListener('DOMContentLoaded', active_volume_tickertape);
-active_volume_tickertape();
+// active_volume_tickertape();
+
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    // Check if volGrid and vol_tape elements exist
+    if (!volGrid || !document.getElementById("vol_tape")) {
+      console.error("Missing DOM elements: volGrid or vol_tape");
+      return; // Exit if elements are missing
+    }
+
+    // Assuming getHighVolumeStocks is asynchronous (modify if synchronous)
+    const rowData = await getHighVolumeStocks();
+    const highVolumeStocks = rowData.filter((stock) => stock.total_vol > 2 * stock.avg_vol);
+
+    // Rest of the active_volume_tickertape function using highVolumeStocks
+    const scroller = document.getElementById("vol_tape");
+    scroller.innerHTML = ""; // Clear scroller content
+    highVolumeStocks.forEach((stock) => {
+      const div = document.createElement("div");
+      div.className = "scroller__item";
+  
+      // Set the stock name with a dollar sign
+      div.textContent = `$${stock.stock.toUpperCase()}`;
+  
+      // Calculate the price change (assuming a 'change' property in stock)
+      const call_change= stock.call_vol_pct_chng;
+      const put_change= stock.put_vol_pct_chng;
+  
+      // Set the color and indicator based on price change
+      if (call_change > 0) {
+        div.style.color = "green";
+        div.innerHTML += " &#9650;"; // Upward arrow symbol (Unicode)
+      } else if (put_change > 0) {
+        div.style.color = "red";
+        div.innerHTML += " &#9660;"; // Downward arrow symbol (Unicode)
+      } else {
+        div.style.color = "red";
+      }
+  
+      // Append the element to the scroller
+      div.className = "scroller__item";
+      scroller.appendChild(div);
+    });
+  } catch (error) {
+    console.error("Error fetching high volume stocks:", error);
+    // Handle errors here (e.g., display an error message)
+  }
+});
 
 

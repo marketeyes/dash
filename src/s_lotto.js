@@ -55,14 +55,23 @@ const columnDefsLottos = [
       maxWidth: 100,
     },
     {
-      field: 'pct_chg',
-      headerName: '% Change',
+      field: 'percentchange',
+      headerName: '%CHNG',
       sortable: true,
       valueFormatter: function(params) {
         return params.value > 0 ? "↑ " + params.value.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "%" : "↓ " + params.value.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "%";
       },
       cellStyle: function(params) {
         return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
+      },
+      maxWidth: 120,
+    },
+    {
+      field:'lastprice_avg_30d',
+      headerName: 'AvgPrice',
+      sortable: true,
+      valueFormatter: function(params) {
+        return "$" + params.value.toFixed(2);
       },
       maxWidth: 120,
     },
@@ -120,6 +129,37 @@ const columnDefsLottos = [
       },
       hide: true,
     },
+    {
+      field:'impliedvolatility', 
+      headerName: 'IV',
+      sortable: true,
+      valueFormatter: function(params) {
+        return params.value.toFixed(2) + "%";
+      },
+      hide: false,
+      maxWidth: 100,
+    },
+    {
+      field:'iv_avg_30d',
+      headerName: 'AvgIV',
+      sortable: true,
+      valueFormatter: function(params) {
+        return params.value.toFixed(2) + "%";
+      },
+      hide: false,
+      maxWidth: 100,
+    },
+    {
+      field: 'amnt',
+      headerName: '???',
+      sortable: true,
+      valueFormatter: function(params) {
+        return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      },
+      hide: false, 
+      maxWidth: 110,
+    }
+
 ];
  
   
@@ -130,8 +170,13 @@ const cgrid = {
 
 lottosGrid = agGrid.createGrid(document.querySelector('#contracts_grid'), cgrid);
 
+function reset_grid(){
+    lottosGrid.setGridOption('rowData', []);
+}
+
 // Fetch data from the API
 function getPercentMovers(){
+    reset_grid();
     fetch('data/pct.json')
         .then(response => response.json())
         .then((cdata) => lottosGrid.setGridOption('rowData', cdata))
@@ -141,6 +186,7 @@ function getPercentMovers(){
 };
 
 function getVolumeMovers(){
+  reset_grid();
     fetch('data/vol.json')
         .then(response => response.json())
         .then((cdata) => lottosGrid.setGridOption('rowData', cdata))
@@ -150,6 +196,7 @@ function getVolumeMovers(){
 };
 
 function getOIMovers(){
+  reset_grid();
     fetch('data/oi.json')
         .then(response => response.json())
         .then((cdata) => lottosGrid.setGridOption('rowData', cdata))
@@ -159,6 +206,7 @@ function getOIMovers(){
 };
 
 function getVOIMovers(){
+    reset_grid();
     fetch('data/voi.json')
         .then(response => response.json())
         .then((cdata) => lottosGrid.setGridOption('rowData', cdata))

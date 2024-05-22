@@ -89,14 +89,14 @@ const columnDefsLottos = [
       valueFormatter: function(params) {
         return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       },
-      hide: true,
+      hide: false,
       maxWidth: 120,
     },
     {
       field: 'voi',
-      headerName: 'Vol/OI',
-      valueFormatter: x => x.toFixed(2), // Arrow function for concise formatting
-      hide: true,
+      headerName: 'VOI',
+      // valueFormatter: x => x.toFixed(2), // Arrow function for concise formatting
+      hide: false,
       maxWidth: 120,
     },
     {

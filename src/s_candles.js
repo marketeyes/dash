@@ -13,7 +13,7 @@ function candleChart(data, title, gl, rl){
         inset: 10,
         width: Math.min(1500, window.innerWidth - 100),
         height: Math.min(500, window.innerHeight - 100),
-        aspectRatio: 1,
+        aspectRatio: 0.5,
         x: {
             x: "Date",
             label: null,
@@ -27,7 +27,7 @@ function candleChart(data, title, gl, rl){
         },
         color: {domain: [-1, 0, 1], range: ["#e41a1c", "currentColor", "#4daf4a"]},
         marks: [
-            Plot.frame(),
+            // Plot.frame(),
             Plot.ruleY(gl, {stroke: "green", strokeWidth: 3, strokeDasharray: "3,2"}),
             Plot.ruleY(rl, {stroke: "red", strokeWidth: 3, strokeDasharray: "3,2"}),
             // Plot.ruleY(data, Plot.selectFirst({y: d => d.Open,stroke: 'grey',strokeDasharray: "3,2",})),
@@ -35,7 +35,7 @@ function candleChart(data, title, gl, rl){
                 x: "Date",
                 y1: "Low",
                 y2: "High",
-                strokeWidth: 1,
+                strokeWidth: 0.5,
             }),
             Plot.ruleX(data, {
               x: "Date",
@@ -80,7 +80,11 @@ function barChart(data, min_price, max_price){
             nice:true
         },
         // facet: { data: data, y: "strike", columns: 3},
-        marks: [Plot.frame(),Plot.barX(data, {y: "strike", x: "gamma",fill: d => d.gamma > 0 ? "green" : "red",}),]
+        marks: [
+            // Plot.frame(),
+            Plot.barX(data,
+            {y: "strike", x: "gamma",fill: d => d.gamma > 0 ? "green" : "red",}),
+            ]
         });
     const delta_bar = Plot.plot({
         width: Math.min(500, window.innerWidth - 100),
@@ -105,7 +109,11 @@ function barChart(data, min_price, max_price){
             nice:true
         },
         // facet: { data: data, y: "strike", columns: 3},
-        marks: [Plot.frame(),Plot.barX(data, {y: "strike", x: "delta",fill: d => d.delta > 0 ? "green" : "red",}),]
+        marks: [
+            // Plot.frame(),
+            Plot.barX(data,
+            {y: "strike", x: "delta",fill: d => d.delta > 0 ? "green" : "red",}),
+            ]
         });
     const vanna_bar = Plot.plot({
         width: Math.min(500, window.innerWidth - 100),
@@ -130,7 +138,11 @@ function barChart(data, min_price, max_price){
             nice:true
         },
         // facet: { data: data, y: "strike", columns: 3},
-        marks: [Plot.frame(),Plot.barX(data, {y: "strike", x: "vanna",fill: d => d.vanna > 0 ? "green" : "red",}),]
+        marks: [
+            // Plot.frame(),
+            Plot.barX(data,
+            {y: "strike", x: "vanna",fill: d => d.vanna > 0 ? "green" : "red",}),
+            ]
         });
     const charm_bar = Plot.plot({
         width: Math.min(500, window.innerWidth - 100),
@@ -155,7 +167,11 @@ function barChart(data, min_price, max_price){
             nice:true
         },
         // facet: { data: data, y: "strike", columns: 3},
-        marks: [Plot.frame(),Plot.barX(data, {y: "strike", x: "charm",fill: d => d.charm > 0 ? "green" : "red",}),]
+        marks: [
+            // Plot.frame(),
+            Plot.barX(data,
+            {y: "strike", x: "charm",fill: d => d.charm > 0 ? "green" : "red",}),
+            ]
         });
 
     d3.select("#p7-1").append(() => gamma_bar);
@@ -222,56 +238,55 @@ function charts(pricePath, expPath, level_file, title){
 
 
 
-function chartSPY(){
+function chartSPY(folder){
     d3.select("#p6").selectAll("*").remove();
     d3.select("#p7-1").selectAll("*").remove();
     d3.select("#p7-2").selectAll("*").remove();
     d3.select("#p7-3").selectAll("*").remove();
     d3.select("#p7-4").selectAll("*").remove();
-    const pricePath = 'data/prices/spy.csv';
-    const expPath = 'data/exposure/spy_exposure.csv';
-    const level_file = 'data/exposure/spy_levels.json';
+    const pricePath = folder + '/prices/spy.csv';
+    const expPath = folder + '/exposure/spy_exposure.csv';
+    const level_file = folder + '/exposure/spy_levels.json';
     charts(pricePath, expPath,level_file, "$SPY");
 }
 
 
-function chartQQQ(){
+function chartQQQ(folder){
     d3.select("#p6").selectAll("*").remove();
     d3.select("#p7-1").selectAll("*").remove();
     d3.select("#p7-2").selectAll("*").remove();
     d3.select("#p7-3").selectAll("*").remove();
     d3.select("#p7-4").selectAll("*").remove();
-    const pricePath = 'data/prices/qqq.csv';
-    const expPath = 'data/exposure/qqq_exposure.csv';
-    const level_file = 'data/exposure/qqq_levels.json';
+    const pricePath = folder + '/prices/qqq.csv';
+    const expPath = folder + '/exposure/qqq_exposure.csv';
+    const level_file = folder + '/exposure/qqq_levels.json';
     charts(pricePath, expPath, level_file, "$QQQ");
 }
 
 
-function chartIWM(){
+function chartIWM(folder){
     d3.select("#p6").selectAll("*").remove();
     d3.select("#p7-1").selectAll("*").remove();
     d3.select("#p7-2").selectAll("*").remove();
     d3.select("#p7-3").selectAll("*").remove();
     d3.select("#p7-4").selectAll("*").remove();
-    const pricePath = 'data/prices/iwm.csv';
-    const expPath = 'data/exposure/iwm_exposure.csv';
-    const level_file = 'data/exposure/iwm_levels.json';
+    const pricePath = folder + '/prices/iwm.csv';
+    const expPath = folder + '/exposure/iwm_exposure.csv';
+    const level_file = folder + '/exposure/iwm_levels.json';
     charts(pricePath, expPath, level_file, "$IWM");
 }
 
 
-function chartVXX(){
+function chartVXX(folder){
     d3.select("#p6").selectAll("*").remove();
     d3.select("#p7-1").selectAll("*").remove();
     d3.select("#p7-2").selectAll("*").remove();
     d3.select("#p7-3").selectAll("*").remove();
     d3.select("#p7-4").selectAll("*").remove();
-    const pricePath = 'data/prices/vxx.csv';
-    const expPath = 'data/exposure/vxx_exposure.csv';
-    const level_file = 'data/exposure/vxx_levels.json';
+    const pricePath = folder + '/prices/vxx.csv';
+    const expPath = folder + '/exposure/vxx_exposure.csv';
+    const level_file = folder + '/exposure/vxx_levels.json';
     charts(pricePath, expPath, level_file, "$VXX");
 }
 
-
-chartSPY();
+chartSPY('../data');

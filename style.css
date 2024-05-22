@@ -64,12 +64,14 @@ body {
 }
 .bg-primary {
   background-color: #007bff !important;
+  /* on click change color */
+  
 }
 .text-white {
   color: #fff !important;
 }
 .btn-primary {
-  margin: 0.5rem;
+  margin: 0.01rem;
 }
 
 .p7-grid-container {

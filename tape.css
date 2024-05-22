@@ -5,7 +5,7 @@
     --scrolling-gallery-items-visible: 7;
     /* How many items are to scroll */
     --scrolling-gallery-items-total: 7;
-    margin-top: .05em;
+    margin-top: .01em;
     overflow: hidden;
     will-change: transform;
     /* bakcground Color */
@@ -22,15 +22,16 @@
     display: flex;
     white-space: nowrap;
     flex: 1;
-    padding: 1rem;
+    padding: 0rem;
     background: rgba(0, 0, 0, 0.1);
-    border-radius: 0.25rem;
+    border-radius: 0rem;
     }
   
   .scroller__container {
     /* Without this, scroll will jump on desktop if any vertical scrollbar is shown */
     width: 100vw;
     display: flex;
+    padding: 0%;
     
   }
   
@@ -38,11 +39,11 @@
     flex: 1 0 calc(100% / var(--scrolling-gallery-items-visible));
     /* Without this, block elements will take width from their contents and thus making wrong calculations,
        so this just force elements to take only exact part of the container (screen) and equal for all */
-    width: 0px;
+    width: 10vmax;
     /* If you want to have it continuous without any spaces, remove two lines below */
     box-sizing: border-box;
-    padding: 0.001em;
-    font-size: .75em;
+    padding: 1em;
+    font-size: 25px;
   }
   
   .scroller img {
@@ -50,7 +51,7 @@
     height: 100%;
     object-fit: cover;
     object-position: center;
-    width: 85%;
+    width: 100%;
   }
   
   @keyframes scrolling-gallery {

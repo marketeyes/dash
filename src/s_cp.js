@@ -1,6 +1,9 @@
 // Grid API: Access to Grid API methods
 // let gridApi;
 
+
+const FILE_PATH = "../data/all_cp.json"
+
 // Rounding Function 
 function round(num) {
     return +(Math.round(num + "e+2")  + "e-2");
@@ -19,7 +22,7 @@ const gridOptions = {
         valueFormatter: function(params) {
           return "$" + params.value.toUpperCase();
         },
-        maxWidth: 95,
+        //maxWidth: 95,
         pinned: 'left',
         lockPinned: true,
         cellClass: 'lock-pinned'
@@ -31,7 +34,7 @@ const gridOptions = {
         valueFormatter: function(params) {
           return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
-        maxWidth: 110,
+        //maxWidth: 110,
     },
     {
         field: 'avg_vol',
@@ -40,7 +43,7 @@ const gridOptions = {
         valueFormatter: function(params) {
           return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
-        maxWidth: 110,
+        //maxWidth: 110,
     },
     {
       field:'call_vol',
@@ -49,7 +52,7 @@ const gridOptions = {
       valueFormatter: function(params) {
         return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       },
-      maxWidth: 110,
+      //maxWidth: 110,
     },
     {
       field: 'call_vol_chng',
@@ -58,7 +61,7 @@ const gridOptions = {
       valueFormatter: function(params) {
         return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       },
-      maxWidth: 110,
+      //maxWidth: 110,
     },
     {
       field:'put_vol',
@@ -67,7 +70,7 @@ const gridOptions = {
       valueFormatter: function(params) {
         return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       },
-      maxWidth: 120,
+      //maxWidth: 120,
     },
     {
       field: 'put_vol_chng',
@@ -76,7 +79,7 @@ const gridOptions = {
       valueFormatter: function(params) {
         return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       },
-      maxWidth: 120,
+      //maxWidth: 120,
     },
     {
         field: 'call_vol_pct',
@@ -86,7 +89,7 @@ const gridOptions = {
             return round(100 * params.value) + "%";
         },
         cellRenderer: 'agAnimateShowChangeCellRenderer',
-        maxWidth: 100,
+        //maxWidth: 100,
     },
     {
         field: 'put_vol_pct',
@@ -96,7 +99,7 @@ const gridOptions = {
           return round(100 * params.value) + "%";
         },
         cellRenderer: 'agAnimateShowChangeCellRenderer',
-        maxWidth: 100,
+        //maxWidth: 100,
     },
     {
       field: 'call_vol_pct_chng',
@@ -109,7 +112,7 @@ const gridOptions = {
       cellStyle: function(params) {
         return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
       },
-      maxWidth: 100,
+      //maxWidth: 100,
     },
     {
         field: 'put_vol_pct_chng',
@@ -122,78 +125,7 @@ const gridOptions = {
         cellStyle: function(params) {
           return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
         },
-        maxWidth: 100,
-    }
-    ]
-  ,
-};
-
-// Create Grid: Create new grid within the #myGrid div, using the Grid Options object
-volGrid = agGrid.createGrid(document.querySelector("#volume_grid"), gridOptions);
-
-// Fetch Remote Data
-fetch("data/vol_cp.json")
-.then((response) => response.json())
-.then((data) => volGrid.setGridOption("rowData", data))
-.then(() => volGrid.applyColumnState({state: [{colId: 'total_vol',sort: 'desc',}],defaultState: { sort: null }}));
-
-// Return the stocks that have a higher total volume than the average volume
-function getHighVolumeStocks() {
-  // Get the rowData from the grid
-  const rowData = volGrid.getGridOption("rowData");
-  // Filter the rowData to only include stocks with a higher total volume than the average volume
-  const highVolumeStocks = rowData.filter((stock) => stock.total_vol > 2 * stock.avg_vol);
-  // Print the stocks to the object with id = stocks
-    // return only the stock name; add $ and convert to uppercase
-    const stockNames = highVolumeStocks.map(stock => "$" + stock.stock.toUpperCase());
-    // document.getElementById("highvol").innerText = stockNames.join(", ");
-    // Update the grid to show only the high volume stocks
-    volGrid.setGridOption("rowData", highVolumeStocks);
-    volGrid.applyColumnState({state: [{colId: 'total_vol',sort: 'desc',}],defaultState: { sort: null }});
-
-    // // Append the High Volume Stocks to the scroller. Add class="scroller__item" to each div with the stock name
-    // const scroller = document.getElementById("tickertape");
-    // scroller.innerHTML = "";
-    // stockNames.forEach((stock) => {
-    //   const div = document.createElement("div");
-    //   div.className = "scroller__item";
-    //   div.innerText = stock;
-    //   scroller.appendChild(div);
-    // });
-
-
-
-    return stockNames;
-}
-
-function sortcallvol(){
-    volGrid.applyColumnState({state: [{colId: 'call_vol_pct_chng',sort: 'desc',}],defaultState: { sort: null }});
-}
-
-function sortputvol(){
-    volGrid.applyColumnState({state: [{colId: 'put_vol_pct_chng',sort: 'desc',}],defaultState: { sort: null }});
-}
-
-function resetVolume(){
-    fetch("data/vol_cp.json")
-        .then((response) => response.json())
-        .then((data) => volGrid.setGridOption("rowData", data));
-        // document.getElementById("resetvol").innerText = "";
-}
-
-
-const columnDefsOi = [
-    {
-      field: 'stock',
-      sortable: true,
-      headerName: 'Stock',
-      valueFormatter: function(params) {
-        return "$" + params.value.toUpperCase();
-      },
-      pinned: 'left',
-      lockPinned: true,
-      cellClass: 'lock-pinned',
-      maxWidth: 95,
+        //maxWidth: 100,
     },
     {
       field: 'total_oi',
@@ -210,7 +142,7 @@ const columnDefsOi = [
         filterOptions: ['lessThan', 'greaterThan', 'inRange']
       },
       editable: true,
-      maxWidth: 110,
+      //maxWidth: 110,
     },
     {
       field: 'avg_oi',
@@ -219,67 +151,67 @@ const columnDefsOi = [
       valueFormatter: function(params) {
         return params.value !== null ? params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "-";
       },
-      maxWidth: 110,
+      //maxWidth: 110,
       hide: false,
     },
     {
       field: 'call_oi',
       sortable: true,
-      headerName: 'Call OI',
+      headerName: 'CallOI',
       valueFormatter: function(params) {
         return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       },
-      maxWidth: 120,
+      //maxWidth: 120,
     },
     {
       field: 'call_oi_chng',
       sortable: true,
-      headerName: 'Call OI Chng',
+      headerName: 'Call OICHNG',
       valueFormatter: function(params) {
         return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       },
-      maxWidth: 120,
+      //maxWidth: 120,
     },
     {
       field: 'put_oi',
       sortable: true,
-      headerName: 'Put OI',
+      headerName: 'PutOI',
       valueFormatter: function(params) {
         return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       },
-      maxWidth: 110,
+      //maxWidth: 110,
     },
     {
       field: 'put_oi_chng',
       sortable: true,
-      headerName: 'Put OI Chng',
+      headerName: 'PUT OICHNG',
       valueFormatter: function(params) {
         return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       },
-      maxWidth: 120,
+      //maxWidth: 120,
     },
     {
       field: 'call_oi_pct',
       sortable: true,
-      headerName: 'Call %',
+      headerName: 'CallOI%',
       valueFormatter: function(params) {
         return round(100 * params.value) + "%";
       },
-      maxWidth: 95,
+      //maxWidth: 95,
     },
     {
       field: 'put_oi_pct',
       sortable: true,
-      headerName: 'Put %',
+      headerName: 'PutOI%',
       valueFormatter: function(params) {
         return round(100 * params.value) + "%";
       },
-      maxWidth: 95,
+      //maxWidth: 95,
     },
     {
       field: 'call_oi_pct_chng',
       sortable: true,
-      headerName: '🟢Change',
+      headerName: '🟢OICHNG',
       hide: false,
       valueFormatter: function(params) {
         return params.value > 0 ? "↑ " + round(100 * params.value) + "%" : "↓ " + round(100 * params.value) + "%";
@@ -287,12 +219,12 @@ const columnDefsOi = [
       cellStyle: function(params) {
         return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
       },
-      maxWidth: 105,
+      //maxWidth: 105,
     },
     {
       field: 'put_oi_pct_chng',
       sortable: true,
-      headerName: '🔴Change',
+      headerName: '🔴OICHNG',
       hide: false,
       valueFormatter: function(params) {
         return params.value > 0 ? "↑ " + round(100 * params.value) + "%" : "↓ " + round(100 * params.value) + "%";
@@ -300,45 +232,66 @@ const columnDefsOi = [
       cellStyle: function(params) {
         return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
       },
-      maxWidth: 105,
+      //maxWidth: 105,
     }
-  ];
+  ]
+  ,
+};
 
-  
-const grid_options_oi = {
-    rowData: [],
-    columnDefs: columnDefsOi
-    };
+// Create Grid: Create new grid within the #myGrid div, using the Grid Options object
+volGrid = agGrid.createGrid(document.querySelector("#volume_grid"), gridOptions);
 
+// Fetch Remote Data
+fetch(FILE_PATH)
+.then((response) => response.json())
+.then((data) => volGrid.setGridOption("rowData", data))
+.then(() => volGrid.applyColumnState({state: [{colId: 'total_vol',sort: 'desc',}],defaultState: { sort: null }}));
 
-oiGrid = agGrid.createGrid(document.querySelector("#oi_grid"), grid_options_oi);
-fetch("data/oi_cp.json")
-    .then((response) => response.json())
-    .then((data) => oiGrid.setGridOption("rowData", data));
+// Return the stocks that have a higher total volume than the average volume
+function getHighVolumeStocks() {
+  // Get the rowData from the grid
+  const rowData = volGrid.getGridOption("rowData");
+  // Filter the rowData to only include stocks with a higher total volume than the average volume
+  const highVolumeStocks = rowData.filter((stock) => stock.total_vol > 2 * stock.avg_vol);
+  // Print the stocks to the object with id = stocks
+    // return only the stock name; add $ and convert to uppercase
+    const stockNames = highVolumeStocks.map(stock => "$" + stock.stock.toUpperCase());
+    // document.getElementById("highvol").innerText = stockNames.join(", ");
+    volGrid.setGridOption("rowData", highVolumeStocks);
+    volGrid.applyColumnState({state: [{colId: 'total_vol',sort: 'desc',}],defaultState: { sort: null }});
+    return stockNames;
+}
 
+function sortcallvol(){
+    volGrid.applyColumnState({state: [{colId: 'call_vol_pct_chng',sort: 'desc',}],defaultState: { sort: null }});
+}
 
-
+function sortputvol(){
+    volGrid.applyColumnState({state: [{colId: 'put_vol_pct_chng',sort: 'desc',}],defaultState: { sort: null }});
+}
 function getHighOpenInterestStocks(){
     const rowData = oiGrid.getGridOption("rowData");
     const highOIStocks = rowData.filter((stock) => stock.total_oi > 1.5 * stock.avg_oi);
     const stockNames = highOIStocks.map(stock => "$" + stock.stock.toUpperCase());
-    oiGrid.setGridOption("rowData", highOIStocks);
+    volGrid.setGridOption("rowData", highOIStocks);
     // return stockNames;
 }
 
 function sortcalloi(){
-    oiGrid.applyColumnState({state: [{colId: 'call_oi_pct_chng',sort: 'desc',}],defaultState: { sort: null }});
+    volGrid.applyColumnState({state: [{colId: 'call_oi_pct_chng',sort: 'desc',}],defaultState: { sort: null }});
 }
 
 function sortputoi(){
-    oiGrid.applyColumnState({state: [{colId: 'put_oi_pct_chng',sort: 'desc',}],defaultState: { sort: null }});
+    volGrid.applyColumnState({state: [{colId: 'put_oi_pct_chng',sort: 'desc',}],defaultState: { sort: null }});
 }
 
-function resetOpenInterest(){
-    fetch("data/oi_cp.json")
-        .then((response) => response.json())
-        .then((data) => oiGrid.setGridOption("rowData", data));
+function resetVolume(){
+  fetch(FILE_PATH)
+      .then((response) => response.json())
+      .then((data) => volGrid.setGridOption("rowData", data));
+      // document.getElementById("resetvol").innerText = "";
 }
+
 
 async function active_volume_tickertape() {
   // Get the rowData from the grid
@@ -377,55 +330,3 @@ async function active_volume_tickertape() {
     scroller.appendChild(div);
   });
 }
-
-// document.addEventListener('DOMContentLoaded', active_volume_tickertape);
-// active_volume_tickertape();
-
-document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    // Check if volGrid and vol_tape elements exist
-    if (!volGrid || !document.getElementById("vol_tape")) {
-      console.error("Missing DOM elements: volGrid or vol_tape");
-      return; // Exit if elements are missing
-    }
-
-    // Assuming getHighVolumeStocks is asynchronous (modify if synchronous)
-    const rowData = await getHighVolumeStocks();
-    const highVolumeStocks = rowData.filter((stock) => stock.total_vol > 2 * stock.avg_vol);
-
-    // Rest of the active_volume_tickertape function using highVolumeStocks
-    const scroller = document.getElementById("vol_tape");
-    scroller.innerHTML = ""; // Clear scroller content
-    highVolumeStocks.forEach((stock) => {
-      const div = document.createElement("div");
-      div.className = "scroller__item";
-  
-      // Set the stock name with a dollar sign
-      div.textContent = `$${stock.stock.toUpperCase()}`;
-  
-      // Calculate the price change (assuming a 'change' property in stock)
-      const call_change= stock.call_vol_pct_chng;
-      const put_change= stock.put_vol_pct_chng;
-  
-      // Set the color and indicator based on price change
-      if (call_change > 0) {
-        div.style.color = "green";
-        div.innerHTML += " &#9650;"; // Upward arrow symbol (Unicode)
-      } else if (put_change > 0) {
-        div.style.color = "red";
-        div.innerHTML += " &#9660;"; // Downward arrow symbol (Unicode)
-      } else {
-        div.style.color = "red";
-      }
-  
-      // Append the element to the scroller
-      div.className = "scroller__item";
-      scroller.appendChild(div);
-    });
-  } catch (error) {
-    console.error("Error fetching high volume stocks:", error);
-    // Handle errors here (e.g., display an error message)
-  }
-});
-
-

@@ -2,7 +2,7 @@
 // let gridApi;
 
 
-const FILE_PATH = "../data/all_cp.json"
+const FILE_PATH = "../data/flows/all_cp.json"
 
 // Rounding Function 
 function round(num) {

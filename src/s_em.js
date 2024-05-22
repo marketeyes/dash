@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const gridDiv = document.querySelector('#em_grid');
   gridApi = agGrid.createGrid(gridDiv, gridOptionsEM);
 
-  fetch('../data/em.json')
+  fetch('../data/exp_move/em.json')
       .then(response => response.json())
       .then((data) => gridApi.setGridOption('rowData', data));
     

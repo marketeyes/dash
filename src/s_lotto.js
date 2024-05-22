@@ -177,7 +177,7 @@ function reset_grid(){
 // Fetch data from the API
 function getPercentMovers(){
     reset_grid();
-    fetch('../data/pct.json')
+    fetch('../data/contracts/pct.json')
         .then(response => response.json())
         .then((cdata) => lottosGrid.setGridOption('rowData', cdata))
         .then(() => lottosGrid.applyColumnState(
@@ -187,7 +187,7 @@ function getPercentMovers(){
 
 function getVolumeMovers(){
   reset_grid();
-    fetch('../data/vol.json')
+    fetch('../data/contracts/vol.json')
         .then(response => response.json())
         .then((cdata) => lottosGrid.setGridOption('rowData', cdata))
         .then(() => lottosGrid.applyColumnState(
@@ -197,7 +197,7 @@ function getVolumeMovers(){
 
 function getOIMovers(){
   reset_grid();
-    fetch('../data/oi.json')
+    fetch('../data/contracts/oi.json')
         .then(response => response.json())
         .then((cdata) => lottosGrid.setGridOption('rowData', cdata))
         .then(() => lottosGrid.applyColumnState(
@@ -207,7 +207,7 @@ function getOIMovers(){
 
 function getVOIMovers(){
     reset_grid();
-    fetch('../data/voi.json')
+    fetch('../data/contracts/voi.json')
         .then(response => response.json())
         .then((cdata) => lottosGrid.setGridOption('rowData', cdata))
         .then(() => lottosGrid.applyColumnState(

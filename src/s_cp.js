@@ -299,6 +299,7 @@ async function active_volume_tickertape() {
   console.log("active_volume_tickertape");
   const rowData = volGrid.getGridOption("rowData");
   const highVolumeStocks = rowData.filter((stock) => stock.total_vol > 2 * stock.avg_vol);
+  console.log(highVolumeStocks);
   const scroller = document.getElementById("vol_tape");
   // Add a text to the left of the scroller
   scroller.innerHTML = "";

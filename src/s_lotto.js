@@ -6,6 +6,15 @@ function round(num) {
 
 const columnDefsLottos = [
     {
+      field: 'stock',
+      sortable: true,
+      headerName: 'Stock',
+      pinned: "left",
+      lockPinned: true,
+      cellClass: 'lock-pinned',
+      maxWidth: 100,
+    },
+    {
       field: 'type',
       sortable: true,
       headerName: 'Type',
@@ -21,20 +30,12 @@ const columnDefsLottos = [
       hide: true,
     },
     {
-      field: 'stock',
-      sortable: true,
-      headerName: 'Stock',
-      pinned: "left",
-      lockPinned: true,
-      cellClass: 'lock-pinned',
-      maxWidth: 100,
-    },
-    {
       field: 'strike',
       sortable: true,
       headerName: 'Strike',
+      lockPinned: true,
+      cellClass: 'lock-pinned',
       maxWidth: 100,
-      // Removed commented-out pinning options
     },
     {
       field: 'exp',
@@ -42,6 +43,8 @@ const columnDefsLottos = [
       headerName: 'Expiration',
       valueFormatter: params => params.value, // Simplified function for identity transform
       // Removed commented-out pinning options
+      lockPinned: true,
+      cellClass: 'lock-pinned',
       maxWidth: 125,
     },
     {

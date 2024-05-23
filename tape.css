@@ -16,16 +16,19 @@
 
 .text-box {
   /* Styles for the text box */
-  background-color: grey;
+  background-color: black;
   color: black;
-  padding: 1em;
+  padding: .5em;
   margin-right: 1%;
+  margin-top:0%;
   flex-shrink: 0;
-  width: 10vmax; /* Fixed width for the text box */
+  width: 15vmin; /* Fixed width for the text box */
   height:auto;
   z-index: 1; /* Ensure it stays above the scroller */
   text-align: center;
-  font-size:5vmax;
+  font-size:1vmin;
+  /* White text color */
+  color: white;
 }
 
 .scroller__container {
@@ -45,7 +48,7 @@
   flex: 1 0 calc(100% / var(--scrolling-gallery-items-visible));
   box-sizing: border-box;
   padding: .001em;
-  font-size: 3vmin;
+  font-size:2vmin;
   margin-left:30px;
 }
 

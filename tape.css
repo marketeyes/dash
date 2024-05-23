@@ -18,13 +18,14 @@
   /* Styles for the text box */
   background-color: grey;
   color: black;
-  padding: .15em;
+  padding: 1em;
   margin-right: 1%;
   flex-shrink: 0;
-  width: 50px; /* Fixed width for the text box */
+  width: 10vmax; /* Fixed width for the text box */
+  height:auto;
   z-index: 1; /* Ensure it stays above the scroller */
   text-align: center;
-  font-size:5vmin;
+  font-size:5vmax;
 }
 
 .scroller__container {

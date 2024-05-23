@@ -31,7 +31,7 @@
             <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
                 <div class="container-fluid">
                 <a class="navbar-brand" href="#">
-                    <img src='../images/brand_logo.png' class="img-rounded" alt="MarketEyes" style="width: 150px; height: 50px;">
+                    <img src='../images/brand_logo.png' class="img-rounded" alt="MarketEyes" style="width: 150px; height: 50px;" href="../index.html">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar" aria-controls="collapsibleNavbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -57,12 +57,47 @@
                 </div>
                 </div>
             </nav>
-
             <!-- CONTENT -->
-            <div class="mt-5 p-4  text-white text-center">
-                <p>Footer</p>
+                <!-- Page Header -->
+    <div id="section1" class="page-header container-fluid py-5 bg-primary text-center rounded text-white", style="padding:15%; height:">
+        <h1>MarketEyes</h1>
+         <!-- links to the pages -->
+         <p>
+            <a class="btn btn-primary" data-bs-toggle="collapse" href="#About" role="button" aria-expanded="false" aria-controls="collapseExample">
+              About
+            </a>
+            <a class="btn btn-primary" data-bs-toggle="collapse" href="#about_OI" role="button" aria-expanded="false" aria-controls="collapseExample">
+              Open Interest 
+            </a>
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+              Volume
+            </button>
+          </p>
+          <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+              Volume is the number of contracts traded in the current day, this includes both the buy and sell side of the trade. Therefore, a large amount of volume is indicitive of particular interest of a stock from a large fund or market player. 
             </div>
-        </body>
-        <script src="../src/s_cp.js"></script>
+          </div>
+          <div class="collapse" id="About">
+            <div class="card card-body">
+              <h1>MarketEyes</h1>
+              <p>MarketEyes is a financial data visualization tool that provides a comprehensive view of the stock market. It is designed to help traders and investors make informed decisions by providing real-time data on stock prices, volume, and options flows. MarketEyes uses advanced data analytics and visualization techniques to present complex financial data in an easy-to-understand format. The platform is designed to be user-friendly and intuitive, making it easy for traders and investors to access the information they need to make smart investment decisions.</p>
+            </div>
+          </div>
+          <div class="collapse" id="about_OI">
+            <div class="card card-body">
+              <p>
+                Open Interest reflects the number of open contracts for a Stock at the end of each trading day. Values for OI are updated at 8:00 AM EST the following day, therefore the data is a lagging indicator of the previous day's activity.
+              </p>
+            </div>
+          </div>
+
+
+    </div>  
+    <!-- FOOTER --> 
+    <div class="mt-5 p-4  text-white text-center">
+        <p>Footer</p>
+    </div>
+    </body>
     </head>
 </html>

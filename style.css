@@ -4,7 +4,10 @@ body {
 
 /* On small screens, set height to 'auto' for the grid */
 @media screen and (max-width: 767px) {
-.row.content {height: auto;} 
+.row.content {
+  height: auto;
+  width: auto;
+  } 
 }
 
 * Tooltip container */
@@ -71,7 +74,16 @@ body {
   color: #fff !important;
 }
 .btn-primary {
-  margin: 0.01rem;
+  margin: 0.0001rem;
+  border-color:white;
+  /* background-color: #0d60ba7a; */
+}
+
+
+.active-stocks-text {
+  background-color: #ccff00;
+  width: 100%;
+
 }
 
 .p7-grid-container {
@@ -90,17 +102,6 @@ body {
   width: 100%;
   height: 100%;
 }
-
-/* .shared-crosshair-y {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: black;
-  pointer-events: none;
-  z-index: 1000;
-} */
 
 .ag-theme-quartz.compact, .ag-theme-quartz-dark.compact {
   --ag-grid-size: 3px;

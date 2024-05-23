@@ -32,7 +32,7 @@
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">
-            <img src='images/brand_logo.png' class="img-rounded" alt="MarketEyes" style="width: 150px; height: 50px;">
+            <img src='images/brand_logo.png' class="img-rounded" alt="MarketEyes" style="width: 150px; height: 50px;" href="#">
           </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar" aria-controls="collapsibleNavbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -60,9 +60,44 @@
       </nav>
 
     <!-- Page Header -->
-    <div id="section1" class="page-header container-fluid py-5 bg-primary text-center rounded text-white", style="padding:15%; height:">
+    <div id="section1" class="page-header container-fluid py-5 bg-dark text-center rounded text-white", style="padding:15%;">
         <h1>MarketEyes</h1>
          <!-- links to the pages -->
+         <div class="container-fluid">
+          <p>
+            <a class="btn btn-primary mb-1" data-bs-toggle="collapse" href="#About" role="button">
+              About
+            </a>
+            <a class="btn btn-primary mb-1" data-bs-toggle="collapse" href="#about_OI" role="button">
+              Flows
+            </a>
+            <button class="btn btn-primary mb-1" type="button" data-bs-toggle="collapse" data-bs-target="#about_Volume">
+              Lottos
+            </button>
+          </p>
+          <div class="collapse" id="About">
+            <div class="card card-body text-black">
+              <h1>MarketEyes</h1>
+              <p>MarketEyes is a financial data visualization tool that provides a comprehensive view of the stock market. It is designed to help traders and investors make informed decisions by providing real-time data on stock prices, volume, and options flows. MarketEyes uses advanced data analytics and visualization techniques to present complex financial data in an easy-to-understand format. The platform is designed to be user-friendly and intuitive, making it easy for traders and investors to access the information they need to make smart investment decisions.</p>
+            </div>
+          </div>
+          <div class="collapse" id="about_OI">
+            <div class="card card-body text-black">
+              <h1>Open Interest</h1>
+              <p>
+                Open Interest reflects the number of open contracts for a Stock at the end of each trading day. Values for OI are updated at 8:00 AM EST the following day, therefore the data is a lagging indicator of the previous day's activity.
+              </p>
+              <h1>Volume</h1>
+              <p>
+                Volume is the number of contracts traded in the current day, this includes both the buy and sell side of the trade. Therefore, a large amount of volume is indicitive of particular interest of a stock from a large fund or market player. 
+              </p>
+            </div>
+            <div class="collapse" id="about_Volume">
+              <div class="card card-body text-black">
+              </div>
+            </div>
+          </div>
+        </div>
     </div>  
 </body>
 <script src="src/s_cp.js"></script>

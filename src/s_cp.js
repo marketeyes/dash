@@ -13,277 +13,311 @@ function arrow_format(num){
   return num > 0 ? "↑ " + round(100 * num) + "%" : "↓ " + round(100 * num) + "%";
 }
 
-// Grid Options: Contains all of the grid configurations
-const gridOptions = {
-  // Data to be displayed
-  rowData: [],
-  // Columns to be displayed (Should match rowData properties)
-  columnDefs: [
-    {
-        field: 'stock',
-        sortable: true,
-        headerName: 'Stock',
-        valueFormatter: function(params) {
-          return "$" + params.value.toUpperCase();
-        },
-        //maxWidth: 95,
-        pinned: 'left',
-        lockPinned: true,
-        cellClass: 'lock-pinned'
-    },
-    { 
-        headerName: "Volume", 
-        children: [
-                  {
-                      columnGroupShow: 'closed', 
-                      field: 'total_vol',
-                      sortable: true,
-                      headerName: 'Total',
-                      valueFormatter: function(params) {
-                        return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                      },
-                      //maxWidth: 110,
-                  },
-                  {
+const grid_definitions = [
+  {
+      field: 'stock',
+      sortable: true,
+      headerName: 'Stock',
+      valueFormatter: function(params) {
+        return "$" + params.value.toUpperCase();
+      },
+      //maxWidth: 95,
+      pinned: 'left',
+      lockPinned: true,
+      cellClass: 'lock-pinned'
+  },
+  { 
+      headerName: "Volume", 
+      children: [
+                {
                     columnGroupShow: 'closed', 
-                      field: 'avg_vol',
-                      sortable: true,
-                      headerName: 'AvgVol(30D)',
-                      valueFormatter: function(params) {
-                        return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                      },
-                      //maxWidth: 110,
-                  },
-                  {
-                    columnGroupShow: 'open', 
-                    field:'call_vol',
+                    field: 'total_vol',
                     sortable: true,
-                    headerName: 'Calls',
-                    valueFormatter: function(params) {
-                      // return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " (" + params.node.data.call_vol_chng.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ")";
-                      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                    },
-                    // Highlight the cell green if call_vol_chng > 0 and red if call_vol_chng < 0
-                    cellStyle: function(params) {
-                      return params.node.data.call_vol_chng > 0 ? {'color': 'green'} : {'color': 'red'};
-                    },
-                  },
-                  {
-                    columnGroupShow: 'open', 
-                    field: 'call_vol_chng',
-                    sortable: true,
-                    headerName: 'Call Vol Chng', 
+                    headerName: 'Total',
                     valueFormatter: function(params) {
                       return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     },
-                    hide: true,
-                  },
-                  {
-                    columnGroupShow: 'open', 
-                    field:'put_vol',
+                    //maxWidth: 110,
+                },
+                {
+                  columnGroupShow: 'closed', 
+                    field: 'avg_vol',
                     sortable: true,
-                    headerName: 'Puts',
+                    headerName: 'AvgVol(30D)',
                     valueFormatter: function(params) {
                       return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     },
+                    //maxWidth: 110,
+                },
+                {
+                  columnGroupShow: 'open', 
+                  field:'call_vol',
+                  sortable: true,
+                  headerName: 'Calls',
+                  valueFormatter: function(params) {
+                    // return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " (" + params.node.data.call_vol_chng.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ")";
+                    return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  },
+                  // Highlight the cell green if call_vol_chng > 0 and red if call_vol_chng < 0
+                  cellStyle: function(params) {
+                    return params.node.data.call_vol_chng > 0 ? {'color': 'green'} : {'color': 'red'};
+                  },
+                },
+                {
+                  columnGroupShow: 'open', 
+                  field: 'call_vol_chng',
+                  sortable: true,
+                  headerName: 'Call Vol Chng', 
+                  valueFormatter: function(params) {
+                    return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                  },
+                  hide: true,
+                },
+                {
+                  columnGroupShow: 'open', 
+                  field:'put_vol',
+                  sortable: true,
+                  headerName: 'Puts',
+                  valueFormatter: function(params) {
+                    return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                  },
+                  cellStyle: function(params) {
+                    return params.node.data.put_vol_chng > 0 ? {'color': 'green'} : {'color': 'red'};
+                  }
+                },
+                {
+                  columnGroupShow: 'open', 
+                  field: 'put_vol_chng',
+                  sortable: true,
+                  headerName: 'Put Vol Chng', 
+                  valueFormatter: function(params) {
+                    return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                  },
+                  hide:true, 
+                },
+                {
+                  columnGroupShow: 'open', 
+                    field: 'call_vol_pct',
+                    sortable: true,
+                    headerName: 'Call %',
+                    valueFormatter: function(params) {
+                      p = round(100 * params.value) + "%" ;
+                      g = round(100 * params.node.data.call_vol_pct_chng)
+                      gF = g > 0 ? "↑ " + g + "%" : "↓ " + g + "%";
+                      return p + " (" + gF + ")";
+                    },
                     cellStyle: function(params) {
-                      return params.node.data.put_vol_chng > 0 ? {'color': 'green'} : {'color': 'red'};
+                      return params.node.data.call_vol_pct_chng > 0 ? {'color': 'green'} : {'color': 'red'};
                     }
-                  },
-                  {
-                    columnGroupShow: 'open', 
-                    field: 'put_vol_chng',
+                    //maxWidth: 100,
+                },
+                {
+                  columnGroupShow: 'open', 
+                    field: 'put_vol_pct',
                     sortable: true,
-                    headerName: 'Put Vol Chng', 
+                    headerName: 'Put %',
                     valueFormatter: function(params) {
-                      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                      p = round(100 * params.value) + "%" ;
+                      g = round(100 * params.node.data.put_vol_pct_chng)
+                      gF = g > 0 ? "↑ " + g + "%" : "↓ " + g + "%";
+                      return p + " (" + gF + ")";
                     },
-                    hide:true, 
+                    cellStyle: function(params) {
+                      return params.node.data.put_vol_pct_chng > 0 ? {'color': 'green'} : {'color': 'red'};
+                    }
+                    //maxWidth: 100,
+                },
+                {
+                  columnGroupShow: 'open', 
+                  field: 'call_vol_pct_chng',
+                  sortable: true,
+                  headerName: '🟢CHNG',
+                  hide: true,
+                  valueFormatter: function(params) {
+                    return params.value > 0 ? "↑ " + round(100 * params.value) + "%" : "↓ " + round(100 * params.value) + "%";
                   },
-                  {
-                    columnGroupShow: 'open', 
-                      field: 'call_vol_pct',
-                      sortable: true,
-                      headerName: 'Call %',
-                      valueFormatter: function(params) {
-                        p = round(100 * params.value) + "%" ;
-                        g = round(100 * params.node.data.call_vol_pct_chng)
-                        gF = g > 0 ? "↑ " + g + "%" : "↓ " + g + "%";
-                        return p + " (" + gF + ")";
-                      },
-                      cellStyle: function(params) {
-                        return params.node.data.call_vol_pct_chng > 0 ? {'color': 'green'} : {'color': 'red'};
-                      }
-                      //maxWidth: 100,
+                  cellStyle: function(params) {
+                    return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
                   },
-                  {
-                    columnGroupShow: 'open', 
-                      field: 'put_vol_pct',
-                      sortable: true,
-                      headerName: 'Put %',
-                      valueFormatter: function(params) {
-                        p = round(100 * params.value) + "%" ;
-                        g = round(100 * params.node.data.put_vol_pct_chng)
-                        gF = g > 0 ? "↑ " + g + "%" : "↓ " + g + "%";
-                        return p + " (" + gF + ")";
-                      },
-                      cellStyle: function(params) {
-                        return params.node.data.put_vol_pct_chng > 0 ? {'color': 'green'} : {'color': 'red'};
-                      }
-                      //maxWidth: 100,
-                  },
-                  {
-                    columnGroupShow: 'open', 
-                    field: 'call_vol_pct_chng',
+                  //maxWidth: 100,
+                },
+                {
+                  columnGroupShow: 'open', 
+                    field: 'put_vol_pct_chng',
                     sortable: true,
-                    headerName: '🟢CHNG',
+                    headerName: '🔴CHNG',
                     hide: true,
                     valueFormatter: function(params) {
-                      return params.value > 0 ? "↑ " + round(100 * params.value) + "%" : "↓ " + round(100 * params.value) + "%";
+                        return params.value > 0 ? "↑ " +  round(100 * params.value) + "%" : "↓ " + round(100 * params.value) + "%";
                     },
                     cellStyle: function(params) {
                       return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
                     },
                     //maxWidth: 100,
-                  },
-                  {
-                    columnGroupShow: 'open', 
-                      field: 'put_vol_pct_chng',
-                      sortable: true,
-                      headerName: '🔴CHNG',
-                      hide: true,
-                      valueFormatter: function(params) {
-                          return params.value > 0 ? "↑ " +  round(100 * params.value) + "%" : "↓ " + round(100 * params.value) + "%";
-                      },
-                      cellStyle: function(params) {
-                        return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
-                      },
-                      //maxWidth: 100,
-                  },
-              ]
-    },
-    {
-      headerName: "Open Interest",
-      children:[
-            {
-              columnGroupShow: 'closed', 
-              field: 'total_oi',
-              sortable: true,
-              headerName: 'Total',
-              valueFormatter: function(params) {
-                return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-              },
-              filter: "agNumberColumnFilter",
-              filterValueGetter: function(params) {
-                return params.value; // Removed extra parenthesis
-              },
-              filterParams: {
-                filterOptions: ['lessThan', 'greaterThan', 'inRange']
-              },
-              editable: true,
-              //maxWidth: 110,
+                },
+            ]
+  },
+  {
+    headerName: "Open Interest",
+    children:[
+          {
+            columnGroupShow: 'closed', 
+            field: 'total_oi',
+            sortable: true,
+            headerName: 'Total',
+            valueFormatter: function(params) {
+              return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             },
-            {
-              columnGroupShow: 'closed', 
-              field: 'avg_oi',
-              sortable: true,
-              headerName: 'AvgOI(30D)',
-              valueFormatter: function(params) {
-                return params.value !== null ? params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "-";
-              },
-              //maxWidth: 110,
-              hide: false,
+            filter: "agNumberColumnFilter",
+            filterValueGetter: function(params) {
+              return params.value; // Removed extra parenthesis
             },
-            {
-              columnGroupShow: 'open', 
-              field: 'call_oi',
-              sortable: true,
-              headerName: 'Calls',
-              valueFormatter: function(params) {
-                return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-              },
-              //maxWidth: 120,
+            filterParams: {
+              filterOptions: ['lessThan', 'greaterThan', 'inRange']
             },
-            {
-              columnGroupShow: 'open', 
-              field: 'call_oi_chng',
-              sortable: true,
-              headerName: 'CallChng',
-              valueFormatter: function(params) {
-                return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-              },
-              //maxWidth: 120,
+            editable: true,
+            //maxWidth: 110,
+          },
+          {
+            columnGroupShow: 'closed', 
+            field: 'avg_oi',
+            sortable: true,
+            headerName: 'AvgOI(30D)',
+            valueFormatter: function(params) {
+              return params.value !== null ? params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "-";
             },
-            {
-              columnGroupShow: 'open', 
-              field: 'put_oi',
-              sortable: true,
-              headerName: 'Puts',
-              valueFormatter: function(params) {
-                return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-              },
-              //maxWidth: 110,
+            //maxWidth: 110,
+            hide: false,
+          },
+          {
+            columnGroupShow: 'open', 
+            field: 'call_oi',
+            sortable: true,
+            headerName: 'Calls',
+            valueFormatter: function(params) {
+              // return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " (" + params.node.data.call_vol_chng.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ")";
+              return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             },
-            {
-              columnGroupShow: 'open', 
-              field: 'put_oi_chng',
-              sortable: true,
-              headerName: 'PutCHNG',
-              valueFormatter: function(params) {
-                return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-              },
-              //maxWidth: 120,
+            // Highlight the cell green if call_vol_chng > 0 and red if call_vol_chng < 0
+            cellStyle: function(params) {
+              return params.node.data.call_oi_chng > 0 ? {'color': 'green'} : {'color': 'red'};
             },
-            {
-              columnGroupShow: 'open', 
-              field: 'call_oi_pct',
-              sortable: true,
-              headerName: 'CallOI%',
-              valueFormatter: function(params) {
-                return round(100 * params.value) + "%";
-              },
-              //maxWidth: 95,
+            //maxWidth: 120,
+          },
+          {
+            columnGroupShow: 'open', 
+            field: 'call_oi_chng',
+            sortable: true,
+            headerName: 'CallChng',
+            valueFormatter: function(params) {
+              return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             },
-            {
-              columnGroupShow: 'open', 
-              field: 'put_oi_pct',
-              sortable: true,
-              headerName: 'PutOI%',
-              valueFormatter: function(params) {
-                return round(100 * params.value) + "%";
-              },
-              //maxWidth: 95,
+            hide:true, 
+            //maxWidth: 120,
+          },
+          {
+            columnGroupShow: 'open', 
+            field: 'put_oi',
+            sortable: true,
+            headerName: 'Puts',
+            valueFormatter: function(params) {
+              // return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " (" + params.node.data.put_oi_chng.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ")";
+              return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             },
-            {
-              columnGroupShow: 'open', 
-              field: 'call_oi_pct_chng',
-              sortable: true,
-              headerName: '🟢OICHNG',
-              hide: false,
-              valueFormatter: function(params) {
-                return params.value > 0 ? "↑ " + round(100 * params.value) + "%" : "↓ " + round(100 * params.value) + "%";
-              },
-              cellStyle: function(params) {
-                return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
-              },
-              //maxWidth: 105,
+            // Highlight the cell green if call_vol_chng > 0 and red if call_vol_chng < 0
+            cellStyle: function(params) {
+              return params.node.data.put_oi_chng > 0 ? {'color': 'green'} : {'color': 'red'};
             },
-            {
-              columnGroupShow: 'open', 
-              field: 'put_oi_pct_chng',
-              sortable: true,
-              headerName: '🔴OICHNG',
-              hide: false,
-              valueFormatter: function(params) {
-                return params.value > 0 ? "↑ " + round(100 * params.value) + "%" : "↓ " + round(100 * params.value) + "%";
-              },
-              cellStyle: function(params) {
-                return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
-              },
-              //maxWidth: 105,
-            }
-          ]},
-  ],
+            //maxWidth: 110,
+          },
+          {
+            columnGroupShow: 'open', 
+            field: 'put_oi_chng',
+            sortable: true,
+            headerName: 'PutCHNG',
+            valueFormatter: function(params) {
+              return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            },
+            hide:true, 
+            //maxWidth: 120,
+          },
+          {
+            columnGroupShow: 'open', 
+            field: 'call_oi_pct',
+            sortable: true,
+            headerName: 'CallOI%',
+            valueFormatter: function(params) {
+              p = round(100 * params.value) + "%" ;
+              g = round(100 * params.node.data.call_oi_pct_chng)
+              gF = g > 0 ? "↑ " + g + "%" : "↓ " + g + "%";
+              return p + " (" + gF + ")";
+            },
+            cellStyle: function(params) {
+              return params.node.data.call_oi_pct_chng > 0 ? {'color': 'green'} : {'color': 'red'};
+            },
+            //maxWidth: 100,
+            //maxWidth: 95,
+          },
+          {
+            columnGroupShow: 'open', 
+            field: 'put_oi_pct',
+            sortable: true,
+            headerName: 'PutOI%',
+            valueFormatter: function(params) {
+              return round(100 * params.value) + "%";
+            },
+            valueFormatter: function(params) {
+              p = round(100 * params.value) + "%" ;
+              g = round(100 * params.node.data.put_oi_pct_chng)
+              gF = g > 0 ? "↑ " + g + "%" : "↓ " + g + "%";
+              return p + " (" + gF + ")";
+            },
+            cellStyle: function(params) {
+              return params.node.data.put_oi_pct_chng > 0 ? {'color': 'green'} : {'color': 'red'};
+            },
+            //maxWidth: 95,
+          },
+          {
+            columnGroupShow: 'open', 
+            field: 'call_oi_pct_chng',
+            sortable: true,
+            headerName: '🟢OICHNG',
+            hide: false,
+            valueFormatter: function(params) {
+              return params.value > 0 ? "↑ " + round(100 * params.value) + "%" : "↓ " + round(100 * params.value) + "%";
+            },
+            cellStyle: function(params) {
+              return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
+            },
+            hide:true, 
+            //maxWidth: 105,
+          },
+          {
+            columnGroupShow: 'open', 
+            field: 'put_oi_pct_chng',
+            sortable: true,
+            headerName: '🔴OICHNG',
+            hide: false,
+            valueFormatter: function(params) {
+              return params.value > 0 ? "↑ " + round(100 * params.value) + "%" : "↓ " + round(100 * params.value) + "%";
+            },
+            cellStyle: function(params) {
+              return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
+            },
+            hide:true, 
+            //maxWidth: 105,
+          }
+        ]},
+]
+
+
+
+// Grid Options: Contains all of the grid configurations
+const gridOptions = {
+  // Data to be displayed
+  rowData: [],
+  // Columns to be displayed (Should match rowData properties)
+  columnDefs: grid_definitions,
   defaultColDef: {
     filter: true,
   },
@@ -344,44 +378,4 @@ function resetVolume(){
       .then((response) => response.json())
       .then((data) => volGrid.setGridOption("rowData", data));
       // document.getElementById("resetvol").innerText = "";
-}
-
-
-async function active_volume_tickertape() {
-  // Get the rowData from the grid
-  getHighVolumeStocks();
-  console.log("active_volume_tickertape");
-  const rowData = volGrid.getGridOption("rowData");
-  const highVolumeStocks = rowData.filter((stock) => stock.total_vol > 2 * stock.avg_vol);
-  console.log(highVolumeStocks);
-  const scroller = document.getElementById("vol_tape");
-  // Add a text to the left of the scroller
-  scroller.innerHTML = "";
-  // Loop through each stock and create the element
-  highVolumeStocks.forEach((stock) => {
-    const div = document.createElement("div");
-    div.className = "scroller__item";
-
-    // Set the stock name with a dollar sign
-    div.textContent = `$${stock.stock.toUpperCase()}`;
-
-    // Calculate the price change (assuming a 'change' property in stock)
-    const call_change= stock.call_vol_pct_chng;
-    const put_change= stock.put_vol_pct_chng;
-
-    // Set the color and indicator based on price change
-    if (call_change > 0) {
-      div.style.color = "green";
-      div.innerHTML += " &#9650;"; // Upward arrow symbol (Unicode)
-    } else if (put_change > 0) {
-      div.style.color = "red";
-      div.innerHTML += " &#9660;"; // Downward arrow symbol (Unicode)
-    } else {
-      div.style.color = "red";
-    }
-
-    // Append the element to the scroller
-    div.className = "scroller__item";
-    scroller.appendChild(div);
-  });
 }

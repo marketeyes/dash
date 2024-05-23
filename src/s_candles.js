@@ -47,7 +47,7 @@ function candleChart(data, title, gl, rl){
             }),
             Plot.crosshairY(data, {x: "Date", y: "Close", textFill:'black'}),
             // Plot.bollingerY(data, {x: "Date", y: "Close", stroke: "none", n: 4, k: 2}),
-            Plot.linearRegressionY(data, {x: "Date", y: "High", stroke: "grey", inset: 1, opacity: 0.5}),
+            // Plot.linearRegressionY(data, {x: "Date", y: "High", stroke: "grey", inset: 1, opacity: 0.5}),
           ]
     
       })

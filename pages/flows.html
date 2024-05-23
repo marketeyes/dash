@@ -30,7 +30,7 @@
     <body>
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
             <div class="container-fluid">
-              <a class="navbar-brand" href="#">
+              <a class="navbar-brand" href="../index.html">
                 <img src='../images/brand_logo.png' class="img-rounded" alt="MarketEyes" style="width: 150px; height: 50px;">
               </a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar" aria-controls="collapsibleNavbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,13 +61,11 @@
         
           <!-- CONTENT -->
 
+          <!-- <button id="tape2" class="active-stocks-text m-0" onclick="active_volume_tickertape()">Active</button> -->
         <div class="row">
-        <div class="col-md-1 btn-group p-0">
-            <!-- <button id="tape2" class="btn btn-primary" onclick="active_volume_tickertape()">Active</button> -->
-          </div>
           <div class="row">
-            <button id="tape2" class="btn btn-primary active-stocks-text" onclick="active_volume_tickertape()">Active</button>
             <section class="scroller__wrapper">
+              <div class="text-box" style="font-size:1vmin;">🔥 Volume</div>
               <div class="scroller__container">
                 <div id="vol_tape" class="scroller " style="margin-left:20%;">
               </div>
@@ -75,26 +73,44 @@
             </section>
           </div>
         </div>
-        <div id="section2" class="container-fluid p-5 bg-dark">
+        <!-- HIGLIGHTS -->
+        
+
+        <!-- DROPDOWN MENU FOR SORTING VOLUME GRID -->
+        <div id="section2" class="container-fluid p-1 bg-dark">
+            <!-- FLOWS HEADING TEXT -->
             <h1 class="text-center text-white">Flows</h1>
-            <div class="row">
-                <div class="col-md">
-                    <div class="text-center text-white mb-4", style="padding:1%;">
-                        <div class="btn-group">
-                            <button id="highvol" class="btn btn-primary" role="button" data-bs-toggle="button" onclick="getHighVolumeStocks()">Volume > Avg</button>
-                            <button id="callvol" class="btn btn-primary" role="button" data-bs-toggle="button" onclick="sortcallvol()">Call Vol</button>
-                            <button id="putvol" class="btn btn-primary" role="button" data-bs-toggle="button" onclick="sortputvol()">Put Vol</button>
-                            <button id="calloi" class="btn btn-primary" role="button" data-bs-toggle="button" onclick="sortcalloi()">Call OI </button>
-                            <button id="putoi" class="btn btn-primary" role="button" data-bs-toggle="button" onclick="sortputoi()">Put OI</button>
-                            <button id="resetoi" class="btn btn-primary" role="button"  onclick="resetVolume()">Reset</button>
-                        </div>
-                    </div>
-                    <div id="volume_grid" style="height: 600px; width: 100%; padding-right:5%;" class="ag-theme-quartz-dark" style="flex: 1 1 auto"></div>
-                </div>
-            
+            <!-- DROPDOWN MENU FOR SORTING VOLUME GRID -->
+            <div class="text-center text-white mb-4", style="padding:0%;">
+              <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                  <div class="btn-group" role="group">
+                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        Volume
+                    </button>
+                      <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                        <li><a href="#" class="dropdown-item" onclick="getHighVolumeStocks()">🔥 2x Avg Vol</a></li>
+                        <li><a href="#" class="dropdown-item" onclick="sortcallvol()">Sort Call Vol</a></li>
+                        <li><a href="#" class="dropdown-item" onclick="sortputvol()">Sort Put Vol</a></li>
+                      </ul>
+                  </div>
+                  <div class="btn-group" role="group">
+                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        Open Interest
+                    </button>
+                      <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                        <li><a href="#" class="dropdown-item" onclick="sortcalloi()">Sort Call OI</a></li>
+                        <li><a href="#" class="dropdown-item" onclick="sortputoi()">Sort Put OI</a></li>
+                      </ul>
+                  </div>
+                  <button type="button" class="btn btn-primary" onclick="resetVolume()">Reset</button>
             </div>
+          </div>
+          <div class="row">    
+              <div id="volume_grid" style="height: 600px; width: 100%; padding-right:5%;" class="ag-theme-alpine-dark" style="flex: 1 1 auto"></div>
+          </div>
         </div>
     </body>
     <script src="../src/s_cp.js"></script>
+    <script src="../src/ticker_data.js"></script>
 </head>
     

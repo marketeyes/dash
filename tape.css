@@ -1,5 +1,3 @@
-
-
 .scroller__wrapper {
   /* How Fast one slide is visible on screen (from entering screen to leaving it) */
   --scrolling-gallery-item-duration: 10s;
@@ -9,54 +7,45 @@
   --scrolling-gallery-items-total: 7;
   margin-top: .01em;
   margin-bottom: .001;
-  margin-left:1%;
   overflow: hidden;
   will-change: transform;
-  /* bakcground Color */
   background-color: black; 
-  overflow-x: hidden;
   display: flex;
-  padding-right:0;
+  align-items: center;
+}
+
+.text-box {
+  /* Styles for the text box */
+  background-color: grey;
+  color: black;
+  padding: .15em;
+  margin-right: 1%;
+  flex-shrink: 0;
+  width: 50px; /* Fixed width for the text box */
+  z-index: 1; /* Ensure it stays above the scroller */
+  text-align: center;
+  font-size:5vmin;
+}
+
+.scroller__container {
+  /* Make the scroller container take the remaining space */
+  flex: 1;
+  overflow: hidden;
 }
 
 .scroller {
-  /* THIS CONTROLS THE TEXT GOING ACROSS THE SCREEN  */
-  /* This forces the scroller to be as wide as all items together */
-  animation-duration: calc(var(--scrolling-gallery-item-duration, ,5s) / var(--scrolling-gallery-items-visible) * var(--scrolling-gallery-items-total));
-  animation-timing-function: linear;
-  animation-name: scrolling-gallery;
-  animation-iteration-count: infinite;
+  /* Controls the text going across the screen */
+  animation: scrolling-gallery calc(var(--scrolling-gallery-item-duration) * var(--scrolling-gallery-items-total) / var(--scrolling-gallery-items-visible)) linear infinite;
   display: flex;
   white-space: nowrap;
-  /* flex: 1; */
-  padding: 1vmax;
-  /* background: rgba(0, 0, 0, 0.1); */
-  border-radius: 0rem;
-  margin-top:1%;
-  /* margin-left:10%; */
-  padding-left:1%;
-  width:900px;
-  }
-
-.scroller__container {
-  /* Without this, scroll will jump on desktop if any vertical scrollbar is shown */
-  width: 100vw;
-  /* display: flex; */
-  padding: 0%;
-  
-  
-  
 }
 
 .scroller__item {
   flex: 1 0 calc(100% / var(--scrolling-gallery-items-visible));
-  /* Without this, block elements will take width from their contents and thus making wrong calculations,
-     so this just force elements to take only exact part of the container (screen) and equal for all */
-  width: 1vmax;
-  /* If you want to have it continuous without any spaces, remove two lines below */
   box-sizing: border-box;
   padding: .001em;
-  font-size: 10px;
+  font-size: 3vmin;
+  margin-left:30px;
 }
 
 .scroller img {
@@ -65,14 +54,16 @@
   object-fit: cover;
   object-position: center;
   width: 100%;
-  border-left:0%;
+  border-left: 0%;
 }
 
 @keyframes scrolling-gallery {
   10% {
+    /* transform: translateX(100%); */
     transform: translateX();
   }
   100% {
+    /* transform: translateX(-100%); */
     transform: translateX(calc(var(--scrolling-gallery-items-total) * -100vw / var(--scrolling-gallery-items-visible)));
   }
 }

@@ -101,3 +101,9 @@ body {
   pointer-events: none;
   z-index: 1000;
 } */
+
+.ag-theme-quartz.compact, .ag-theme-quartz-dark.compact {
+  --ag-grid-size: 3px;
+  --ag-list-item-height: 20px;
+  --ag-font-size: 10px;
+}

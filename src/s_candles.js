@@ -47,7 +47,7 @@ function candleChart(data, title, gl, rl){
             }),
             Plot.crosshairY(data, {x: "Date", y: "Close", textFill:'black'}),
             // Plot.bollingerY(data, {x: "Date", y: "Close", stroke: "none", n: 4, k: 2}),
-            // Plot.linearRegressionY(data, {x: "Date", y: "Close", stroke: "grey", inset: 10}),
+            Plot.linearRegressionY(data, {x: "Date", y: "High", stroke: "grey", inset: 1, opacity: 0.5}),
           ]
     
       })
@@ -61,7 +61,7 @@ function barChart(data, min_price, max_price){
         aspectRatio: 1,
         inset: 10,
         x: {
-            label: "Gamma Exposure (Millions)",
+            label: "Gamma Exposure",
             labelAnchor: "center",
             grid: true,
             reverse: false,
@@ -92,7 +92,7 @@ function barChart(data, min_price, max_price){
         aspectRatio: 1,
         inset: 10,
         x: {
-            label: "Delta Exposure (Millions)",
+            label: "Open Interest",
             labelAnchor: "center",
             grid: true,
             reverse: false,
@@ -111,8 +111,8 @@ function barChart(data, min_price, max_price){
         // facet: { data: data, y: "strike", columns: 3},
         marks: [
             // Plot.frame(),
-            Plot.barX(data,
-            {y: "strike", x: "delta",fill: d => d.delta > 0 ? "green" : "red",}),
+            Plot.barX(data,{y: "strike", x: "call_oi",fill: "green", opacity:1}),
+            Plot.barX(data,{y: "strike", x: "put_oi",fill: "red", opacity:1}),
             ]
         });
     const vanna_bar = Plot.plot({
@@ -121,7 +121,7 @@ function barChart(data, min_price, max_price){
         aspectRatio: 1,
         inset: 10,
         x: {
-            label: "Vanna Exposure (Millions)",
+            label: "Vanna Exposure",
             labelAnchor: "center",
             grid: true,
             reverse: false,
@@ -150,7 +150,7 @@ function barChart(data, min_price, max_price){
         aspectRatio: 1,
         inset: 10,
         x: {
-            label: "Charm Exposure (Millions)",
+            label: "Charm Exposure",
             labelAnchor: "center",
             grid: true,
             reverse: false,
@@ -214,6 +214,10 @@ function charts(pricePath, expPath, level_file, title){
             d.delta = +d.dexp;
             d.vanna = +d.vexp;
             d.charm = +d.cexp;
+            d.call_volume = +d.call_volume;
+            d.put_volume = +d.put_volume;
+            d.call_oi = +d.call_oi;
+            d.put_oi = -d.put_oi;
             // console.log(d)
         });
 

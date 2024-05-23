@@ -66,7 +66,7 @@
             <!-- <button id="tape2" class="btn btn-primary" onclick="active_volume_tickertape()">Active</button> -->
           </div>
           <div class="row">
-            <button id="tape2" class="btn-primary active-stocks-text" onclick="active_volume_tickertape()">Active</button>
+            <button id="tape2" class="btn btn-primary active-stocks-text" onclick="active_volume_tickertape()">Active</button>
             <section class="scroller__wrapper">
               <div class="scroller__container">
                 <div id="vol_tape" class="scroller " style="margin-left:20%;">
@@ -79,17 +79,17 @@
             <h1 class="text-center text-white">Flows</h1>
             <div class="row">
                 <div class="col-md">
-                    <div class="text-center text-white mb-4", style="padding:3%;">
+                    <div class="text-center text-white mb-4", style="padding:1%;">
                         <div class="btn-group">
-                            <button id="highvol" class="btn btn-primary" onclick="getHighVolumeStocks()">Volume > Avg</button>
-                            <button id="callvol" class="btn btn-primary" onclick="sortcallvol()">Call Vol</button>
-                            <button id="putvol" class="btn btn-primary" onclick="sortputvol()">Put Vol</button>
-                            <button id="calloi" class="btn btn-primary" onclick="sortcalloi()">Call OI </button>
-                            <button id="putoi" class="btn btn-primary" onclick="sortputoi()">Put OI</button>
-                            <button id="resetoi" class="btn btn-primary" onclick="resetVolume()">Reset</button>
+                            <button id="highvol" class="btn btn-primary" role="button" data-bs-toggle="button" onclick="getHighVolumeStocks()">Volume > Avg</button>
+                            <button id="callvol" class="btn btn-primary" role="button" data-bs-toggle="button" onclick="sortcallvol()">Call Vol</button>
+                            <button id="putvol" class="btn btn-primary" role="button" data-bs-toggle="button" onclick="sortputvol()">Put Vol</button>
+                            <button id="calloi" class="btn btn-primary" role="button" data-bs-toggle="button" onclick="sortcalloi()">Call OI </button>
+                            <button id="putoi" class="btn btn-primary" role="button" data-bs-toggle="button" onclick="sortputoi()">Put OI</button>
+                            <button id="resetoi" class="btn btn-primary" role="button"  onclick="resetVolume()">Reset</button>
                         </div>
                     </div>
-                    <div id="volume_grid" style="height: 600px; width: 100%; padding-right:5%;" class="ag-theme-alpine-dark"></div>
+                    <div id="volume_grid" style="height: 600px; width: 100%; padding-right:5%;" class="ag-theme-quartz-dark" style="flex: 1 1 auto"></div>
                 </div>
             
             </div>

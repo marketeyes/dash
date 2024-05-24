@@ -71,16 +71,37 @@
                         <button id="qqq_candle" class="btn btn-primary" onclick="chartQQQ('../data')">QQQ</button>
                         <button id="iwm_candle" class="btn btn-primary" onclick="chartIWM('../data')">IWM</button>
                         <button id="vxx_candle" class="btn btn-primary" onclick="chartVXX('../data')">VXX</button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">?</button>
                     </div>
                 </div>
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header text-black">
+                        <h5 class="modal-title" id="exampleModalLabel">About the Charts</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-black">
+                            <h3> Candles & Levels</h3>
+                            <p> The Candle chart shows where gamma exposure levels are at their highest (green lines) and lowest (red lines). These levels are where market reversals or trend confirmations occur. When price approaches these levels you will likely notice some choppy price action before the move which is either a trend confirmation or market reversal.  </p>
+                            <h3> Bar Charts </h3>
+                            <p> The bar charts show the Volume, Open Interest, Gamma Exposure, and Vanna Exposure respectively. Exposure levels are based on the notional value of all contracts that are currently open. (Hence the need for open interest). Gamma Exposure assumes that market makers are Long Calls and Short Puts, as price moves up or down it tells us how much market makers will need to hedge to remain delta-neutral. Lower Gamma exposure for a given strike, indicates that the Market Maker will have a lower need for Large and Frequent Rebalancing. Vanna measures the sensitivity of the option price with respect to the asset price and its volatility. Vanna Exposure show us the sensitivity of the delta of a strike price, with respect to changes in volatility. If Vanna is Large, then the delta hedge is extremely sensitive to changes in volatility.  </p>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div id="p6" class="col-6-sm"></div>
+                <div id="p7-1" class="col col-md-3 col-xs-2"></div>
+                <div id="p7-2" class="col col-md-3 col-xs-2"></div>
+                <div id="p7-3" class="col col-md-3 col-xs-2"></div>
+                <div id="p7-4" class="col col-md-3 col-xs-2"></div>
                 
                 <div class="container-fluid">
                     <div class="row g-0">
-                        <div id="p6" class="col-6-sm"></div>
-                        <div id="p7-1" class="col-sm col-md-3 col-xs-2"></div>
-                        <div id="p7-2" class="col-sm col-md-3 col-xs-2"></div>
-                        <div id="p7-3" class="col-sm col-md-3 col-xs-2"></div>
-                        <div id="p7-4" class="col-sm col-md-3 col-xs-2"></div>
                     </div>
                 </div>
             </div>

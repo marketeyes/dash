@@ -6,6 +6,7 @@ var margin = {top: 20, right: 10, bottom: 30, left: 180},
 var timeParse = d3.timeParse("%Y-%m-%dT%H:%M:%S");
 var gdateParse = d3.timeParse("%Y-%m-%d %H:%M:%S");
 var ymdParse = d3.timeParse("%Y-%m-%d");
+var niceFormat = d3.format("~s");
 
 function candleChart(data, title, gl, rl){
     // set flip to the last close
@@ -28,7 +29,7 @@ function candleChart(data, title, gl, rl){
         color: {domain: [-1, 0, 1], range: ["#e41a1c", "currentColor", "#4daf4a"]},
         marks: [
             // Plot.frame(),
-            Plot.ruleY(gl, {stroke: "green", strokeWidth: 3, strokeDasharray: "3,2"}),
+            Plot.ruleY(gl, {stroke: "green", strokeWidth: 3, strokeDasharray: "3,2"}, ),
             Plot.ruleY(rl, {stroke: "red", strokeWidth: 3, strokeDasharray: "3,2"}),
             // Plot.ruleY(data, Plot.selectFirst({y: d => d.Open,stroke: 'grey',strokeDasharray: "3,2",})),
             Plot.ruleX(data, {
@@ -45,9 +46,10 @@ function candleChart(data, title, gl, rl){
               strokeWidth: 2,
               strokeLinecap: "round",
             }),
-            Plot.crosshairY(data, {x: "Date", y: "Close", textFill:'black'}),
-            // Plot.bollingerY(data, {x: "Date", y: "Close", stroke: "none", n: 4, k: 2}),
-            // Plot.linearRegressionY(data, {x: "Date", y: "High", stroke: "grey", inset: 1, opacity: 0.5}),
+            // Plot.crosshair(data, {x: "Date", y: "Close", textFill:'black'}),
+            Plot.dot(data, Plot.pointerX({x: "Date", y: "Close", stroke: "red"})),
+            Plot.ruleX(data, Plot.pointerX({x: "Date", py: "Close", stroke: "red"})),
+            Plot.text(data, Plot.pointerX({px: "Date", py: "Close", dy: -17, frameAnchor: "top-right", fontVariant: "tabular-nums", text: (d) => [`Time ${timeParse(d.Date)}`, `Close ${d.Close.toFixed(2)}`].join("   ")}))
           ]
     
       })
@@ -74,7 +76,7 @@ function barChart(data, min_price, max_price){
             labelAnchor:"top",
             label: "strike",
             grid: true,
-            padding: 0.5,
+            padding: 0.1,
             tickSpacing: 50,
             reverse:true, 
             nice:true
@@ -82,8 +84,11 @@ function barChart(data, min_price, max_price){
         // facet: { data: data, y: "strike", columns: 3},
         marks: [
             // Plot.frame(),
-            Plot.barX(data,
-            {y: "strike", x: "gamma",fill: d => d.gamma > 0 ? "green" : "red",}),
+            Plot.barX(data,{y: "strike", x: "gamma",fill: d => d.gamma > 0 ? "green" : "red",}),
+            // Plot.crosshair(data, {x: "gamma", y: "strike", textFill:'black'}),
+            Plot.dot(data, Plot.pointerY({x: "gamma", y: "strike", stroke: "red"})),
+            Plot.ruleY(data, Plot.pointerY({px: "gamma", y: "strike", stroke: "red"})),
+            Plot.text(data, Plot.pointerY({px: "gamma", py: "strike", dy: -17, frameAnchor: "top-right", fontVariant: "tabular-nums", text: (d) => [`Strike: ${d.strike}`, `Exposure: ${niceFormat(d.gamma)}`].join("   ")}))
             ]
         });
     const delta_bar = Plot.plot({
@@ -103,7 +108,7 @@ function barChart(data, min_price, max_price){
             labelAnchor:"top",
             label: "strike",
             grid: true,
-            padding: 0.5,
+            padding: 0.1,
             tickSpacing: 50,
             reverse:true, 
             nice:true
@@ -111,8 +116,14 @@ function barChart(data, min_price, max_price){
         // facet: { data: data, y: "strike", columns: 3},
         marks: [
             // Plot.frame(),
-            Plot.barX(data,{y: "strike", x: "call_oi",fill: "green", opacity:1}),
-            Plot.barX(data,{y: "strike", x: "put_oi",fill: "red", opacity:1}),
+            Plot.barX(data,{y: "strike", x: "call_oi",fill: "green", opacity: 0.9}),
+            Plot.barX(data,{y: "strike", x: "put_oi",fill: "red", opacity: 0.9}),
+            Plot.crosshair(data, {x: "call_oi", y: "strike", textFill:'black'}),
+            Plot.crosshair(data, {x: "put_oi", y: "strike", textFill:'black'}),
+            Plot.dot(data, Plot.pointerY({x: "call_oi", y: "strike", stroke: "red"})),
+            Plot.dot(data, Plot.pointerY({x: "put_oi", y: "strike", stroke: "red"})),
+            Plot.ruleY(data, Plot.pointerY({px: "call_oi", y: "strike", stroke: "red"})),
+            Plot.text(data, Plot.pointerY({px: "call_oi", py: "strike", dy: -17, frameAnchor: "top-right", fontVariant: "tabular-nums", text: (d) => [`Strike: ${d.strike}`, `Open Interest: ${niceFormat(d.call_oi + (-1 * d.put_oi))}`].join("   ")}))
             ]
         });
     const vanna_bar = Plot.plot({
@@ -132,7 +143,7 @@ function barChart(data, min_price, max_price){
             labelAnchor:"top",
             label: "strike",
             grid: true,
-            padding: 0.5,
+            padding: 0.1,
             tickSpacing: 50,
             reverse:true, 
             nice:true
@@ -140,8 +151,10 @@ function barChart(data, min_price, max_price){
         // facet: { data: data, y: "strike", columns: 3},
         marks: [
             // Plot.frame(),
-            Plot.barX(data,
-            {y: "strike", x: "vanna",fill: d => d.vanna > 0 ? "green" : "red",}),
+            Plot.barX(data,{y: "strike", x: "vanna",fill: d => d.vanna > 0 ? "green" : "red",}),
+            Plot.dot(data, Plot.pointerY({x: "vanna", y: "strike", stroke: "red"})),
+            Plot.ruleY(data, Plot.pointerY({px: "vanna", y: "strike", stroke: "red"})),
+            Plot.text(data, Plot.pointerY({px: "vanna", py: "strike", dy: -17, frameAnchor: "top-right", fontVariant: "tabular-nums", text: (d) => [`Strike: ${d.strike}`, `Exposure: ${niceFormat(d.vanna)}`].join("   ")}))
             ]
         });
     const charm_bar = Plot.plot({
@@ -150,7 +163,7 @@ function barChart(data, min_price, max_price){
         aspectRatio: 1,
         inset: 10,
         x: {
-            label: "Charm Exposure",
+            label: "Volume",
             labelAnchor: "center",
             grid: true,
             reverse: false,
@@ -161,7 +174,7 @@ function barChart(data, min_price, max_price){
             labelAnchor:"top",
             label: "strike",
             grid: true,
-            padding: 0.5,
+            padding: 0.1,
             tickSpacing: 50,
             reverse:true, 
             nice:true
@@ -169,15 +182,19 @@ function barChart(data, min_price, max_price){
         // facet: { data: data, y: "strike", columns: 3},
         marks: [
             // Plot.frame(),
-            Plot.barX(data,
-            {y: "strike", x: "charm",fill: d => d.charm > 0 ? "green" : "red",}),
+            Plot.barX(data,{y: "strike", x: "call_volume",fill: "green", opacity: 0.9}),
+            Plot.barX(data,{y: "strike", x: "put_volume",fill: "red", opacity: 0.9}),
+            Plot.dot(data, Plot.pointerY({x: "call_volume", y: "strike", stroke: "red"})),
+            Plot.dot(data, Plot.pointerY({x: "put_volume", y: "strike", stroke: "red"})),
+            Plot.ruleY(data, Plot.pointerY({px: "call_volume", y: "strike", stroke: "red"})),
+            Plot.text(data, Plot.pointerY({px: "call_volume", py: "strike", dy: -17, frameAnchor: "top-right", fontVariant: "tabular-nums", text: (d) => [`Strike: ${d.strike}`, `Volume: ${niceFormat(d.call_volume +(-1 * d.put_volume) )}`].join("   ")}))
             ]
         });
 
-    d3.select("#p7-1").append(() => gamma_bar);
+    d3.select("#p7-1").append(() => charm_bar);
     d3.select("#p7-2").append(() => delta_bar);
-    d3.select("#p7-3").append(() => vanna_bar);
-    d3.select("#p7-4").append(() => charm_bar);
+    d3.select("#p7-3").append(() => gamma_bar);
+    d3.select("#p7-4").append(() => vanna_bar);
 
     
 }
@@ -215,7 +232,7 @@ function charts(pricePath, expPath, level_file, title){
             d.vanna = +d.vexp;
             d.charm = +d.cexp;
             d.call_volume = +d.call_volume;
-            d.put_volume = +d.put_volume;
+            d.put_volume = -d.put_volume;
             d.call_oi = +d.call_oi;
             d.put_oi = -d.put_oi;
             // console.log(d)

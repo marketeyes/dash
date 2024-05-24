@@ -12,6 +12,7 @@
   background-color: black; 
   display: flex;
   align-items: center;
+  z-index: 0;
 }
 
 .text-box {
@@ -26,9 +27,7 @@
   height:auto;
   z-index: 1; /* Ensure it stays above the scroller */
   text-align: center;
-  font-size:1vmin;
-  /* White text color */
-  color: white;
+  font-size:2vmin;
 }
 
 .scroller__container {

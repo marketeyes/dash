@@ -59,19 +59,19 @@ const grid_definitions = [
                     return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   },
                   // Highlight the cell green if call_vol_chng > 0 and red if call_vol_chng < 0
-                  cellStyle: function(params) {
-                    return params.node.data.call_vol_chng > 0 ? {'color': 'green'} : {'color': 'red'};
-                  },
+                  cellStyle: function(params) {return params.node.data.call_vol_chng > 0 ? {'color': 'green'} : {'color': 'red'};},
+                  maxWidth: 110,
                 },
                 {
                   columnGroupShow: 'open', 
                   field: 'call_vol_chng',
                   sortable: true,
-                  headerName: 'Call Vol Chng', 
+                  headerName: 'CallCHNG', 
                   valueFormatter: function(params) {
                     return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                   },
-                  hide: true,
+                  hide: false,
+                  maxWidth: 120,
                 },
                 {
                   columnGroupShow: 'open', 
@@ -81,19 +81,19 @@ const grid_definitions = [
                   valueFormatter: function(params) {
                     return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                   },
-                  cellStyle: function(params) {
-                    return params.node.data.put_vol_chng > 0 ? {'color': 'green'} : {'color': 'red'};
-                  }
+                  cellStyle: function(params) {return params.node.data.put_vol_chng > 0 ? {'color': 'green'} : {'color': 'red'};},
+                  maxWidth: 110,
                 },
                 {
                   columnGroupShow: 'open', 
                   field: 'put_vol_chng',
                   sortable: true,
-                  headerName: 'Put Vol Chng', 
+                  headerName: 'PutCHNG', 
                   valueFormatter: function(params) {
                     return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                   },
-                  hide:true, 
+                  hide:false, 
+                  maxWidth: 120,
                 },
                 {
                   columnGroupShow: 'open', 
@@ -106,10 +106,8 @@ const grid_definitions = [
                       gF = g > 0 ? "↑ " + g + "%" : "↓ " + g + "%";
                       return p + " (" + gF + ")";
                     },
-                    cellStyle: function(params) {
-                      return params.node.data.call_vol_pct_chng > 0 ? {'color': 'green'} : {'color': 'red'};
-                    }
-                    //maxWidth: 100,
+                    // cellStyle: function(params) {return params.node.data.call_vol_pct_chng > 0 ? {'color': 'green'} : {'color': 'red'};},
+                    maxWidth: 160,
                 },
                 {
                   columnGroupShow: 'open', 
@@ -122,9 +120,7 @@ const grid_definitions = [
                       gF = g > 0 ? "↑ " + g + "%" : "↓ " + g + "%";
                       return p + " (" + gF + ")";
                     },
-                    cellStyle: function(params) {
-                      return params.node.data.put_vol_pct_chng > 0 ? {'color': 'green'} : {'color': 'red'};
-                    }
+                    // cellStyle: function(params) {return params.node.data.put_vol_pct_chng > 0 ? {'color': 'green'} : {'color': 'red'};}
                     //maxWidth: 100,
                 },
                 {
@@ -136,9 +132,7 @@ const grid_definitions = [
                   valueFormatter: function(params) {
                     return params.value > 0 ? "↑ " + round(100 * params.value) + "%" : "↓ " + round(100 * params.value) + "%";
                   },
-                  cellStyle: function(params) {
-                    return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
-                  },
+                  // cellStyle: function(params) {return params.value > 0 ? {'color': 'green'} : {'color': 'red'};},
                   //maxWidth: 100,
                 },
                 {
@@ -150,9 +144,7 @@ const grid_definitions = [
                     valueFormatter: function(params) {
                         return params.value > 0 ? "↑ " +  round(100 * params.value) + "%" : "↓ " + round(100 * params.value) + "%";
                     },
-                    cellStyle: function(params) {
-                      return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
-                    },
+                    // cellStyle: function(params) {return params.value > 0 ? {'color': 'green'} : {'color': 'red'};},
                     //maxWidth: 100,
                 },
             ]
@@ -176,7 +168,7 @@ const grid_definitions = [
               filterOptions: ['lessThan', 'greaterThan', 'inRange']
             },
             editable: true,
-            //maxWidth: 110,
+            // maxWidth: 110,
           },
           {
             columnGroupShow: 'closed', 
@@ -186,8 +178,8 @@ const grid_definitions = [
             valueFormatter: function(params) {
               return params.value !== null ? params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "-";
             },
-            //maxWidth: 110,
-            hide: false,
+            maxWidth: 110,
+            // hide: false,
           },
           {
             columnGroupShow: 'open', 
@@ -202,18 +194,18 @@ const grid_definitions = [
             cellStyle: function(params) {
               return params.node.data.call_oi_chng > 0 ? {'color': 'green'} : {'color': 'red'};
             },
-            //maxWidth: 120,
+            maxWidth: 110,
           },
           {
             columnGroupShow: 'open', 
             field: 'call_oi_chng',
             sortable: true,
-            headerName: 'CallChng',
+            headerName: 'CallCHNG',
             valueFormatter: function(params) {
               return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             },
-            hide:true, 
-            //maxWidth: 120,
+            hide:false, 
+            maxWidth: 120,
           },
           {
             columnGroupShow: 'open', 
@@ -228,7 +220,7 @@ const grid_definitions = [
             cellStyle: function(params) {
               return params.node.data.put_oi_chng > 0 ? {'color': 'green'} : {'color': 'red'};
             },
-            //maxWidth: 110,
+            maxWidth: 110,
           },
           {
             columnGroupShow: 'open', 
@@ -238,8 +230,8 @@ const grid_definitions = [
             valueFormatter: function(params) {
               return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             },
-            hide:true, 
-            //maxWidth: 120,
+            hide:false, 
+            maxWidth: 120,
           },
           {
             columnGroupShow: 'open', 
@@ -252,9 +244,7 @@ const grid_definitions = [
               gF = g > 0 ? "↑ " + g + "%" : "↓ " + g + "%";
               return p + " (" + gF + ")";
             },
-            cellStyle: function(params) {
-              return params.node.data.call_oi_pct_chng > 0 ? {'color': 'green'} : {'color': 'red'};
-            },
+            // cellStyle: function(params) {return params.node.data.call_oi_pct_chng > 0 ? {'color': 'green'} : {'color': 'red'};},
             //maxWidth: 100,
             //maxWidth: 95,
           },
@@ -272,9 +262,7 @@ const grid_definitions = [
               gF = g > 0 ? "↑ " + g + "%" : "↓ " + g + "%";
               return p + " (" + gF + ")";
             },
-            cellStyle: function(params) {
-              return params.node.data.put_oi_pct_chng > 0 ? {'color': 'green'} : {'color': 'red'};
-            },
+            // cellStyle: function(params) {return params.node.data.put_oi_pct_chng > 0 ? {'color': 'green'} : {'color': 'red'};},
             //maxWidth: 95,
           },
           {
@@ -286,9 +274,7 @@ const grid_definitions = [
             valueFormatter: function(params) {
               return params.value > 0 ? "↑ " + round(100 * params.value) + "%" : "↓ " + round(100 * params.value) + "%";
             },
-            cellStyle: function(params) {
-              return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
-            },
+            cellStyle: function(params) {return params.value > 0 ? {'color': 'green'} : {'color': 'red'};},
             hide:true, 
             //maxWidth: 105,
           },
@@ -301,9 +287,7 @@ const grid_definitions = [
             valueFormatter: function(params) {
               return params.value > 0 ? "↑ " + round(100 * params.value) + "%" : "↓ " + round(100 * params.value) + "%";
             },
-            cellStyle: function(params) {
-              return params.value > 0 ? {'color': 'green'} : {'color': 'red'};
-            },
+            cellStyle: function(params) {return params.value > 0 ? {'color': 'green'} : {'color': 'red'};},
             hide:true, 
             //maxWidth: 105,
           }
@@ -324,6 +308,16 @@ const gridOptions = {
   autoSizeStrategy: {
     type: 'fitCellContents'
   },
+  rowClassRules: {
+    // If any rows have a call volume change or call open interest change greater than 100,000 highlight - light green 
+    'volume-change-warning': function(params) {
+      return params.data.call_vol_chng > 100000
+    },
+    // If any rows have a put volume change or put open interest change greater than 100,000 highlight - light red
+    'oi-change-warning': function(params) {
+      return params.data.call_oi_chng > 100000 
+    }
+  }
 };
 
 // Create Grid: Create new grid within the #myGrid div, using the Grid Options object

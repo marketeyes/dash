@@ -26,6 +26,31 @@ const grid_definitions = [
       lockPinned: true,
       cellClass: 'lock-pinned'
   },
+  {
+    headerName: "$$$",
+    children: [
+      {
+        columnGroupShow: 'closed',
+        field: 'call_prem_chng',
+        sortable: true,
+        headerName: 'Call $ CHNG',
+        valueFormatter: function(params) {
+          return "$" + params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        },
+        //maxWidth: 110,   
+      },
+      {
+        columnGroupShow: 'closed',
+        field: 'put_prem_chng',
+        sortable: true,
+        headerName: 'Put $ CHNG',
+        valueFormatter: function(params) {
+          return "$" + params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        },
+
+      }
+    ]
+  },
   { 
       headerName: "Volume", 
       children: [

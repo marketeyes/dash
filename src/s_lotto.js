@@ -6,6 +6,16 @@ function round(num) {
 
 const columnDefsLottos = [
     {
+      sortable: true,
+      headerName: 'Description',
+      pinned: "left",
+      lockPinned: true,
+      cellClass: 'lock-pinned',
+      maxWidth: 200,
+      valueGetter: function(params) {return params.node.data.stock + " " + params.node.data.type + " " + params.node.data.strike + " " + params.node.data.exp;},
+      hide:true,
+    },
+    {
       field: 'stock',
       sortable: true,
       headerName: 'Stock',
@@ -13,15 +23,16 @@ const columnDefsLottos = [
       lockPinned: true,
       cellClass: 'lock-pinned',
       maxWidth: 100,
+      hide:false,
     },
     {
       field: 'type',
       sortable: true,
       headerName: 'Type',
-      pinned: "left",
-      lockPinned: true,
-      cellClass: 'lock-pinned',
+      lockPinned: false,
       maxWidth: 75,
+      hide:false,
+      pinned: "left",
     },
     {
       field: 'contractsymbol',
@@ -36,6 +47,8 @@ const columnDefsLottos = [
       lockPinned: true,
       cellClass: 'lock-pinned',
       maxWidth: 100,
+      hide:false,
+      pinned: "left",
     },
     {
       field: 'exp',
@@ -46,6 +59,8 @@ const columnDefsLottos = [
       lockPinned: true,
       cellClass: 'lock-pinned',
       maxWidth: 125,
+      hide:false,
+      pinned: "left",
     },
     {
       field: 'lastprice',
@@ -56,6 +71,15 @@ const columnDefsLottos = [
       },
       // Removed commented-out cell renderer
       maxWidth: 100,
+    },
+    {
+      field: 'moneyness',
+      headerName: 'Moneyness',
+      sortable: true,
+      valueFormatter: function(params) {
+        return params.value.toFixed(2);
+      },
+      maxWidth: 115,
     },
     {
       field: 'percentchange',

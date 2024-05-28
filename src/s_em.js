@@ -21,10 +21,7 @@ const columndefsEM = [
       field: 'expiry',
       headerName: 'Expiration Date',
       sortable: true, 
-        // Format the date
-        valueFormatter: function(params) {
-            return new Date(params.value).toLocaleDateString();
-        }
+      valueFormatter: function(params) {return new Date(params.value).toLocaleDateString();}
     },
     {
       field: 'stk_price',
@@ -72,8 +69,7 @@ const gridOptionsEM = {
 document.addEventListener('DOMContentLoaded', () => {
   const gridDiv = document.querySelector('#em_grid');
   gridApi = agGrid.createGrid(gridDiv, gridOptionsEM);
-
-  fetch('../data/exp_move/em.json')
+  fetch('../data/contracts/em.json')
       .then(response => response.json())
       .then((data) => gridApi.setGridOption('rowData', data));
     

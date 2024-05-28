@@ -47,8 +47,8 @@ function candleChart(data, title, gl, rl){
               strokeLinecap: "round",
             }),
             // Plot.crosshair(data, {x: "Date", y: "Close", textFill:'black'}),
-            Plot.dot(data, Plot.pointerX({x: "Date", y: "Close", stroke: "red"})),
-            Plot.ruleX(data, Plot.pointerX({x: "Date", py: "Close", stroke: "red"})),
+            Plot.dot(data, Plot.pointerX({x: "Date", y: "Close", stroke: "yellow"})),
+            Plot.ruleY(data, Plot.pointerY({px: "Date", y: "Close", stroke: "red"})),
             Plot.text(data, Plot.pointerX({px: "Date", py: "Close", dy: -17, frameAnchor: "top-right", fontVariant: "tabular-nums", text: (d) => [`Time ${d.Date}`, `Close ${d.Close.toFixed(2)}`].join("   ")}))
           ]
     

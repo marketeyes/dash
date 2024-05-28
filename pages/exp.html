@@ -59,12 +59,23 @@
             </nav>
 
             <!-- CONTENT -->
-            <!-- Expected Moves -->
-            <div id="section4" class="container-fluid py-5 bg-dark", style="padding:1%;">
+            <div class="container-fluid py-5 bg-dark">
                 <div class="text-center" style="padding:1%">
-                <h1 class="text-center text-white rounded">Expected Moves</h1>
+                    <h1 class="text-center text-white rounded">What's priced in</h1>
+                    <div id="stock-selection" class="text-center"></div>
                 </div>
-                <div id="em_grid" style="height: 600px; width: 100%;" class="ag-theme-alpine-dark">
+                <div class="container">
+                    <div class="row">
+                        <div id="plot_area" class="col col-md-9" style="height:600px;"></div>  
+                        <div id="text-box-em" class="col col-3 text-white"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Expected Moves -->
+            <div id="section4" class="container-fluid py-0 bg-dark", style="padding:1%;">
+                <div class="text-center" style="padding:0%">
+                <!-- <h1 class="text-center text-white rounded">Expected Moves</h1></div> -->
+                <!-- <div id="em_grid" style="height: 600px; width: 100%; padding-right:20%;" class="ag-theme-alpine-dark"> -->
                 </div>
                 </div>
             </div>
@@ -72,5 +83,6 @@
 
         </body>
         <script src="../src/s_em.js"></script>
+        <script src="../src/em_plot.js"></script>
     </head>
 </html>

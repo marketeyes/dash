@@ -12,7 +12,7 @@ function candleChart(data, title, gl, rl){
     // set flip to the last close
     const candles = Plot.plot({
         inset: 10,
-        width: Math.min(1500, window.innerWidth - 100),
+        width: Math.max(1000, window.innerWidth - 100),
         height: Math.min(500, window.innerHeight - 100),
         aspectRatio: 0.5,
         x: {

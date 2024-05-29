@@ -242,6 +242,8 @@ function charts(pricePath, expPath, level_file, title){
         data.sort((a, b) => a.strike - b.strike);
         // Min Expiration Date for line chart     
         d3.select("#p6").append(() => candleChart(pdata, title, green_line, red_line));
+        
+
         barChart(data, min_price, max_price);
 
         // Plotly.newPlot('p8', lineChart(data));

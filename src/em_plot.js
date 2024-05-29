@@ -5,7 +5,15 @@
 var stockDrop = d3.select("#stock-selection").append("select");
 
 // Create div for the side panel body 
-var sidePanel = d3.select("#text-box-em").append("div").attr("class", "card-body");
+var sidePanel = d3.select("#text-box-em").append("div");
+
+// Format Date Function
+var formatDate = d3.timeFormat("%B %d, %Y");
+
+// Rounding Function 
+function round(num) {
+    return +(Math.round(num + "e+2")  + "e-2");
+}
     
 // Load the data from the em_ext.json file
 d3.csv("../data/prices/close.csv").then(function(price_data) {
@@ -25,6 +33,8 @@ d3.csv("../data/prices/close.csv").then(function(price_data) {
             // append the stock to the dropdown
             var stocks = data.map(d => d.stock);
             var uniqueStocks = [...new Set(stocks)];
+            // sort uniqueStocks
+            uniqueStocks.sort();
             uniqueStocks.forEach(function(stock) {
                 stockDrop.append("option").text("$"+stock.toUpperCase()).property("value", stock);
             }); // forEach Loop
@@ -33,6 +43,10 @@ d3.csv("../data/prices/close.csv").then(function(price_data) {
             function updatePlot(stock) {
                 var closeData = price_data.filter(d => d[stock.toUpperCase()]);
                 var filteredData = data.filter(d => d.stock === stock);
+                var last_close = closeData[closeData.length - 1][stock.toUpperCase()];
+                var last_close_up = Number(last_close) + 0.5;
+                var last_close_down = Number(last_close) - 0.5;
+
                 var trace1 = {
                     // x: filteredData.map(d => d.expiry),
                     // y: filteredData.map(d => d.last_close),
@@ -42,35 +56,41 @@ d3.csv("../data/prices/close.csv").then(function(price_data) {
                     name: 'Close',
                     line: {
                         color: 'white',
-                        width: 3
+                        width: 1
                     }
                 };
+                // Upper Line Chart 
                 var trace2 = {
-                    x: filteredData.map(d => d.expiry),
-                    y: filteredData.map(d => d.em + d.last_close),
+                    // x: filteredData.map(d => d.expiry),
+                    // y: filteredData.map(d => d.em + d.last_close),
+                    //  Add the last data point from closeData to the begining of the filteredData
+                    x: [closeData[closeData.length - 1].Date, ...filteredData.map(d => d.expiry)],
+                    y: [last_close_up, ...filteredData.map(d => d.em + d.last_close)],
                     mode: 'lines+markers',
                     name: 'Upper Expectations',
                     line: {
                         color: 'green',
-                        width: 3
+                        width: 1.5
                     }
                 };
-
+                // Lower Line Chart
                 var trace3 = {
-                    x: filteredData.map(d => d.expiry),
-                    y: filteredData.map(d => -d.em + d.last_close),
+                    // x: filteredData.map(d => d.expiry),
+                    // y: filteredData.map(d => -d.em + d.last_close),
+                    x: [closeData[closeData.length - 1].Date, ...filteredData.map(d => d.expiry)],
+                    y: [last_close_down, ...filteredData.map(d => -d.em + d.last_close)],
                     mode: 'lines+markers',
                     name: 'Lower Expectations',
                     line: {
                         color: 'red',
-                        width: 3
+                        width: 1.5
                     }
                 };
                 var trace4 = {
                     x: filteredData.map(d => d.expiry),
                     y: filteredData.map(d => -d.em + d.last_close),
                     fill: 'tonexty',
-                    fillcolor: "rgba(68, 68, 68, 0.3)", 
+                    fillcolor: "rgba(68, 68, 70, 0.9)", 
                     line: {width: 0}
                 };
                 
@@ -91,17 +111,20 @@ d3.csv("../data/prices/close.csv").then(function(price_data) {
                     title: '',
                     xaxis: {
                         title: 'Date',
-                        showgrid: false,
+                        showgrid: true,
                         zeroline: false,
-                        tickfont: {color: 'white'}, 
-                        titlefont: {color: 'white'}
+                        showline: true,
+                        tickfont: {color: 'white', size: 8}, 
+                        titlefont: {color: 'white', size: 10},
+                        gridcolor: 'rgba(255, 255, 255, 0.1)',
                     },
                     yaxis: {
-                        title: 'Close Price',
-                        showline: false, 
-                        showgrid: false,
-                        tickfont: {color: 'white'},
-                        titlefont: {color: 'white'}
+                        title: 'Close',
+                        showline: true, 
+                        showgrid: true,
+                        tickfont: {color: 'white', size: 8},
+                        titlefont: {color: 'white', size: 10},
+                        gridcolor: 'rgba(255, 255, 255, 0.1)',
                     },
                     // Horizontal Legend above the plot
                     legend: {
@@ -115,9 +138,10 @@ d3.csv("../data/prices/close.csv").then(function(price_data) {
                     paper_bgcolor: 'rgba(0,0,0,0)',
                     plot_bgcolor: 'rgba(0,0,0,0)',
                     
-                    margin: {l: 70,r: 0,b: 90,t: 50,pad: 4}, 
+
+                    margin: {l:50,r: 25,b: 90,t: 50,pad: 1}, 
                 };
-                Plotly.newPlot('plot_area', traces, layout, {staticPlot: true, responsive: true, });
+                Plotly.newPlot('plot_area', traces, layout, {staticPlot: false, responsive: true, displayModeBar: false});
             } // updatePlot function
 
             // Create a function to update the side panel
@@ -125,11 +149,13 @@ d3.csv("../data/prices/close.csv").then(function(price_data) {
                 var filteredData = data.filter(d => d.stock === stock);
                 var sidePanelData = filteredData.map(d => d);
                 sidePanel.html("");
-                sidePanel.append("h5").text("Stock: " + stock.toUpperCase()).attr("class", "card-title");
-                sidePanel.append("p").text("Expiration Date: " + sidePanelData[0].expiry).attr("class", "card-text");
-                sidePanel.append("p").text("Last Close: " + sidePanelData[0].last_close).attr("class", "card-text");
-                sidePanel.append("p").text("Expected Move: " + sidePanelData[0].em).attr("class", "card-text");
-                sidePanel.append("p").text("Percent Change: " + sidePanelData[0].pct_change).attr("class", "card-text");
+                sidePanel.append("p").text(
+                    "$" + stock.toUpperCase() + " " +
+                    "Pricing in ± $" + sidePanelData[0].em + 
+                    " ( ±" + (100 * round(sidePanelData[0].pct_change)) + "%)" + 
+                    " by " + formatDate(sidePanelData[0].expiry)
+                ).attr("class", "card-text");
+                sidePanel.append("p").text("Last Close: $" + sidePanelData[0].last_close);
             } // updateSidePanel function
 
             // Create a function to handle the change event

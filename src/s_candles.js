@@ -1,8 +1,3 @@
-
-var margin = {top: 20, right: 10, bottom: 30, left: 180},
-    width = window.innerWidth - margin.left - margin.right,
-    height = window.innerHeight - margin.top - margin.bottom; 
-
 var timeParse = d3.timeParse("%Y-%m-%dT%H:%M:%S");
 var gdateParse = d3.timeParse("%Y-%m-%d %H:%M:%S");
 var ymdParse = d3.timeParse("%Y-%m-%d");
@@ -23,11 +18,11 @@ function isDateInArray(needle, haystack) {
 function candleChart(data, title, gl, rl){
     // set flip to the last close
     const candles = Plot.plot({
-        inset: 10,
-        // width: Math.max(800, window.innerWidth),
-        width: window.innerWidth,
-        height: Math.min(500, window.innerHeight),
-        // aspectRatio: 0.5,
+        // inset: 10,
+        width: Math.max(800, window.innerWidth),
+        height: Math.min(600, window.innerHeight),
+        marginLeft: 50,
+        marginRight: 25,
         x: {
             x: "Date",
             label: null,
@@ -49,7 +44,7 @@ function candleChart(data, title, gl, rl){
                 x: "Date",
                 y1: "Low",
                 y2: "High",
-                strokeWidth: 0.5,
+                strokeWidth: 0.05,
             }),
             Plot.ruleX(data, {
               x: "Date",
@@ -66,75 +61,50 @@ function candleChart(data, title, gl, rl){
           ]
     
       })
+        //   candles.setAttribute("font-size", "2vmax");
+
     return candles
 }
 
-function barChart(data, min_price, max_price){  
-    var bar_width = Math.max(10, window.innerWidth);
-    var bar_height = Math.max(10, window.innerHeight);
+function barChart(data, uqs){  
+    var bar_width = Math.min(400, window.innerWidth-100);
+    var bar_height = Math.min(400, window.innerHeight-100);
+    var bar_padding = 0.05;
+    // If uqs is less than 5; strikes = 1 else strikes = 5
+    var strikes = uqs < 5 ? 3 : 5;
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    const gamma_bar = Plot.plot({
-        width: bar_width ,
-        height: bar_height,
-        // aspectRatio: 1,
-        // inset: 0,
-        // make the text larger and legible,
-        x: {
-            label: "Gamma Exposure",
-            labelAnchor: "center",
-            grid: true,
-            reverse: false,
-            nice:true,
-            padding: 0.5,
-            tickFormat: d3.format("~s"),
-
-        },
-        y: {
-            labelAnchor:"top",
-            label: "strike",
-            grid: true,
-            // padding: 0.1,
-            tickSpacing: 50,
-            reverse:true, 
-            nice:true
-        },
-        // facet: { data: data, y: "strike", columns: 3},
-        marks: [
-            // Plot.frame(),
-            Plot.barX(data,{y: "strike", x: "gamma",fill: d => d.gamma > 0 ? "green" : "red",}),
-            // Plot.crosshair(data, {x: "gamma", y: "strike", textFill:'black'}),
-            Plot.dot(data, Plot.pointerY({x: "gamma", y: "strike", stroke: "red"})),
-            Plot.ruleY(data, Plot.pointerY({px: "gamma", y: "strike", stroke: "red"})),
-            Plot.text(data, Plot.pointerY({px: "gamma", py: "strike", dy: -17, frameAnchor: "top-right", fontVariant: "tabular-nums", text: (d) => [`Strike: ${d.strike}`, `Exposure: ${niceFormat(d.gamma)}`].join("   ")}))
-            ]
-        });
-    const delta_bar = Plot.plot({
+    const openInterest_bar = Plot.plot({
         width: bar_width,
         height: bar_height,
         // aspectRatio: 1,
-        // inset: 10,
+
         x: {
             label: "Open Interest",
             labelAnchor: "center",
             grid: true,
             reverse: false,
             nice:true,
-            tickFormat: d3.format("~s"),
+            tickFormat: d3.format("~s")
         },
         y: {
             labelAnchor:"top",
-            label: "strike",
+            label: "",
             grid: true,
-            // padding: 0.1,
+            padding: bar_padding, 
             tickSpacing: 50,
             reverse:true, 
-            nice:true
+            nice:true, 
+            tickFormat: (d, i) => i % strikes === 0 ? d : ""
+
         },
         // facet: { data: data, y: "strike", columns: 3},
         marks: [
             // Plot.frame(),
-            Plot.barX(data,{y: "strike", x: "call_oi",fill: "green", opacity: 0.9}),
-            Plot.barX(data,{y: "strike", x: "put_oi",fill: "red", opacity: 0.9}),
+            Plot.barX(data,{y: "strike", x: "call_oi",fill: "green", opacity: 0.9,}),
+            Plot.barX(data,{y: "strike", x: "put_oi",fill: "red", opacity: 0.9,}),
             Plot.crosshair(data, {x: "call_oi", y: "strike", textFill:'black'}),
             Plot.crosshair(data, {x: "put_oi", y: "strike", textFill:'black'}),
             Plot.dot(data, Plot.pointerY({x: "call_oi", y: "strike", stroke: "red"})),
@@ -143,6 +113,89 @@ function barChart(data, min_price, max_price){
             Plot.text(data, Plot.pointerY({px: "call_oi", py: "strike", dy: -17, frameAnchor: "top-right", fontVariant: "tabular-nums", text: (d) => [`Strike: ${d.strike}`, `Open Interest: ${niceFormat(d.call_oi + (-1 * d.put_oi))}`].join("   ")}))
             ]
         });
+
+
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    const volume_bar = Plot.plot({
+        width: bar_width,
+        height: bar_height,
+        // aspectRatio: 1,
+        // inset: 10,
+        x: {
+            label: "Volume",
+            labelAnchor: "center",
+            grid: true,
+            reverse: false,
+            nice:true,
+            tickFormat: d3.format("~s"),
+        },
+        y: {
+            labelAnchor:"top",
+            label: "",
+            grid: true,
+            padding: bar_padding, 
+            tickSpacing: 50,
+            reverse:true, 
+            nice:true,
+            tickFormat: (d, i) => i % strikes === 0 ? d : ""
+        },
+        // facet: { data: data, y: "strike", columns: 3},
+        marks: [
+            // Plot.frame(),
+            Plot.barX(data,{y: "strike", x: "call_volume",fill: "green", opacity: 0.9}),
+            Plot.barX(data,{y: "strike", x: "put_volume",fill: "red", opacity: 0.9}),
+            Plot.dot(data, Plot.pointerY({x: "call_volume", y: "strike", stroke: "red"})),
+            Plot.dot(data, Plot.pointerY({x: "put_volume", y: "strike", stroke: "red"})),
+            Plot.ruleY(data, Plot.pointerY({px: "call_volume", y: "strike", stroke: "red"})),
+            Plot.text(data, Plot.pointerY({px: "call_volume", py: "strike", dy: -17, frameAnchor: "top-right", fontVariant: "tabular-nums", text: (d) => [`Strike: ${d.strike}`, `Volume: ${niceFormat(d.call_volume +(-1 * d.put_volume) )}`].join("   ")}))
+            ]
+        });
+        
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    const gamma_bar = Plot.plot({
+            width: bar_width ,
+            height: bar_height,
+            // aspectRatio: 1,
+            // inset: 0,
+            // make the text larger and legible,
+            x: {
+                label: "Gamma Exposure",
+                labelAnchor: "center",
+                grid: true,
+                reverse: false,
+                nice:true,
+                padding: 0.5,
+                tickFormat: d3.format("~s"),
+                
+            },
+            y: {
+                labelAnchor:"top",
+                label: "",
+                grid: true,
+                padding: bar_padding, 
+                tickSpacing: 50,
+                reverse:true, 
+                nice:true,
+                tickFormat: (d, i) => i % strikes === 0 ? d : "", 
+            },
+            // facet: { data: data, y: "strike", columns: 3},
+            marks: [
+                // Plot.frame(),
+                Plot.barX(data,{y: "strike", x: "gamma",fill: d => d.gamma > 0 ? "green" : "red",}),
+                // Plot.crosshair(data, {x: "gamma", y: "strike", textFill:'black'}),
+                Plot.dot(data, Plot.pointerY({x: "gamma", y: "strike", stroke: "red"})),
+                Plot.ruleY(data, Plot.pointerY({px: "gamma", y: "strike", stroke: "red"})),
+                Plot.text(data, Plot.pointerY({px: "gamma", py: "strike", dy: -17, frameAnchor: "top-right", fontVariant: "tabular-nums", text: (d) => [`Strike: ${d.strike}`, `Exposure: ${niceFormat(d.gamma)}`].join("   ")}))
+            ]
+        });
+
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     const vanna_bar = Plot.plot({
         width: bar_width,
         height: bar_height,
@@ -158,12 +211,14 @@ function barChart(data, min_price, max_price){
         },
         y: {
             labelAnchor:"top",
-            label: "strike",
+            label: "",
             grid: true,
-            // padding: 0.1,
+            padding: bar_padding, 
             tickSpacing: 50,
             reverse:true, 
-            nice:true
+            nice:true, 
+            tickFormat: (d, i) => i % strikes === 0 ? d : ""
+            
         },
         // facet: { data: data, y: "strike", columns: 3},
         marks: [
@@ -174,44 +229,12 @@ function barChart(data, min_price, max_price){
             Plot.text(data, Plot.pointerY({px: "vanna", py: "strike", dy: -17, frameAnchor: "top-right", fontVariant: "tabular-nums", text: (d) => [`Strike: ${d.strike}`, `Exposure: ${niceFormat(d.vanna)}`].join("   ")}))
             ]
         });
-    const charm_bar = Plot.plot({
-        width: bar_width,
-        height: bar_height,
-        // aspectRatio: 1,
-        // inset: 10,
-        x: {
-            label: "Volume",
-            labelAnchor: "center",
-            grid: true,
-            reverse: false,
-            nice:true,
-            tickFormat: d3.format("~s"),
-        },
-        y: {
-            labelAnchor:"top",
-            label: "strike",
-            grid: true,
-            // padding: 0.1,
-            tickSpacing: 50,
-            reverse:true, 
-            nice:true
-        },
-        // facet: { data: data, y: "strike", columns: 3},
-        marks: [
-            // Plot.frame(),
-            Plot.barX(data,{y: "strike", x: "call_volume",fill: "green", opacity: 0.9}),
-            Plot.barX(data,{y: "strike", x: "put_volume",fill: "red", opacity: 0.9}),
-            Plot.dot(data, Plot.pointerY({x: "call_volume", y: "strike", stroke: "red"})),
-            Plot.dot(data, Plot.pointerY({x: "put_volume", y: "strike", stroke: "red"})),
-            Plot.ruleY(data, Plot.pointerY({px: "call_volume", y: "strike", stroke: "red"})),
-            Plot.text(data, Plot.pointerY({px: "call_volume", py: "strike", dy: -17, frameAnchor: "top-right", fontVariant: "tabular-nums", text: (d) => [`Strike: ${d.strike}`, `Volume: ${niceFormat(d.call_volume +(-1 * d.put_volume) )}`].join("   ")}))
-            ]
-        });
-
-    d3.select("#p7-1").append(() => charm_bar);
-    d3.select("#p7-2").append(() => delta_bar);
-    d3.select("#p7-3").append(() => gamma_bar);
-    d3.select("#p7-4").append(() => vanna_bar);
+    
+        // openInterest_bar.setAttribute("font-size",  Math.min(12, Math.max(12, window.innerWidth / 10)));
+        d3.select("#p7-1").append(() => openInterest_bar);
+        d3.select("#p7-2").append(() => volume_bar);
+        d3.select("#p7-3").append(() => gamma_bar);
+        d3.select("#p7-4").append(() => vanna_bar);
 
     
 }
@@ -255,10 +278,14 @@ function charts(pricePath, expPath, level_file, title){
             // console.log(d)
         });
 
-        // sort data by strike
+    
+        // ------------------------------------------------------
         data.sort((a, b) => a.strike - b.strike);
-        d3.select("#p6").append(() => candleChart(pdata, title, green_line, red_line));
+        var c_chart = candleChart(pdata, title, green_line, red_line);
+        c_chart.setAttribute("font-size", "1vmin");
+        d3.select("#p6").append(() => c_chart);
         
+        // ------------------------------------------------------
         // function to update the dropdown 
         function updateDropdown(data){
             var exps = data.map(d => new Date(d.expiry));
@@ -279,13 +306,15 @@ function charts(pricePath, expPath, level_file, title){
         // function to update the plot
         function updatePlot(exp) {
             var filteredData = data.filter(d => d.expiry.getTime() === exp.getTime());
-            // console.log(filteredData)
+            // filteredData = filteredData.filter(d => d.call_volume > 0 | d.put_volume < 0);
+            // Exclude the strikes where both call and put volume are zero
+            // filteredData = filteredData.filter(d => d.call_volume > 0 | d.put_volume < 0);
             d3.select("#p7-1").selectAll("*").remove();
             d3.select("#p7-2").selectAll("*").remove();
             d3.select("#p7-3").selectAll("*").remove();
             d3.select("#p7-4").selectAll("*").remove();
-            
-            barChart(filteredData, min_price, max_price);
+            var uniqueStrike = [... new Set(filteredData.map(d => d.strike))];
+            barChart(filteredData, uniqueStrike.length);
 
         }
 
@@ -299,21 +328,9 @@ function charts(pricePath, expPath, level_file, title){
         var ud = updateDropdown(data);
         // update the plot with the first date in the uniqueDate array
         updatePlot(ud[0]);
+        // updatePlot(ud[ud.length - 1]);
         // add event listener to the dropdown
         exp_dropdown.on("change", handleChange);
-
-
-        
-
-
-        // // update the plot
-        // updateDropdown(data);
-        // updatePlot(data[0].expiry);
-        // // add event listener to the dropdown
-        // exp_dropdown.on("change", function() {
-        //     var exp = new Date(this.value);
-        //     updatePlot(exp);
-        // });
 
         }).catch(function(error) {
         console.log(error);

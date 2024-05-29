@@ -7,14 +7,27 @@ var timeParse = d3.timeParse("%Y-%m-%dT%H:%M:%S");
 var gdateParse = d3.timeParse("%Y-%m-%d %H:%M:%S");
 var ymdParse = d3.timeParse("%Y-%m-%d");
 var niceFormat = d3.format("~s");
+// Create Dropdown for Expiration Dates 
+var exp_dropdown = d3.select("#exp-selector").append("select");
+
+function isDateInArray(needle, haystack) {
+    for (var i = 0; i < haystack.length; i++) {
+      if (needle.getTime() === haystack[i].getTime()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 
 function candleChart(data, title, gl, rl){
     // set flip to the last close
     const candles = Plot.plot({
         inset: 10,
-        width: Math.max(1000, window.innerWidth - 100),
-        height: Math.min(500, window.innerHeight - 100),
-        aspectRatio: 0.5,
+        // width: Math.max(800, window.innerWidth),
+        width: window.innerWidth,
+        height: Math.min(500, window.innerHeight),
+        // aspectRatio: 0.5,
         x: {
             x: "Date",
             label: null,
@@ -57,11 +70,15 @@ function candleChart(data, title, gl, rl){
 }
 
 function barChart(data, min_price, max_price){  
+    var bar_width = Math.max(10, window.innerWidth);
+    var bar_height = Math.max(10, window.innerHeight);
+
     const gamma_bar = Plot.plot({
-        width: Math.min(500, window.innerWidth - 100),
-        height: Math.min(500, window.innerHeight - 100),
-        aspectRatio: 1,
-        inset: 10,
+        width: bar_width ,
+        height: bar_height,
+        // aspectRatio: 1,
+        // inset: 0,
+        // make the text larger and legible,
         x: {
             label: "Gamma Exposure",
             labelAnchor: "center",
@@ -76,7 +93,7 @@ function barChart(data, min_price, max_price){
             labelAnchor:"top",
             label: "strike",
             grid: true,
-            padding: 0.1,
+            // padding: 0.1,
             tickSpacing: 50,
             reverse:true, 
             nice:true
@@ -92,10 +109,10 @@ function barChart(data, min_price, max_price){
             ]
         });
     const delta_bar = Plot.plot({
-        width: Math.min(500, window.innerWidth - 100),
-        height: Math.min(500, window.innerHeight - 100),
-        aspectRatio: 1,
-        inset: 10,
+        width: bar_width,
+        height: bar_height,
+        // aspectRatio: 1,
+        // inset: 10,
         x: {
             label: "Open Interest",
             labelAnchor: "center",
@@ -108,7 +125,7 @@ function barChart(data, min_price, max_price){
             labelAnchor:"top",
             label: "strike",
             grid: true,
-            padding: 0.1,
+            // padding: 0.1,
             tickSpacing: 50,
             reverse:true, 
             nice:true
@@ -127,10 +144,10 @@ function barChart(data, min_price, max_price){
             ]
         });
     const vanna_bar = Plot.plot({
-        width: Math.min(500, window.innerWidth - 100),
-        height: Math.min(500, window.innerHeight - 100),
-        aspectRatio: 1,
-        inset: 10,
+        width: bar_width,
+        height: bar_height,
+        // aspectRatio: 1,
+        // inset: 10,
         x: {
             label: "Vanna Exposure",
             labelAnchor: "center",
@@ -143,7 +160,7 @@ function barChart(data, min_price, max_price){
             labelAnchor:"top",
             label: "strike",
             grid: true,
-            padding: 0.1,
+            // padding: 0.1,
             tickSpacing: 50,
             reverse:true, 
             nice:true
@@ -158,10 +175,10 @@ function barChart(data, min_price, max_price){
             ]
         });
     const charm_bar = Plot.plot({
-        width: Math.min(500, window.innerWidth - 100),
-        height: Math.min(500, window.innerHeight - 100),
-        aspectRatio: 1,
-        inset: 10,
+        width: bar_width,
+        height: bar_height,
+        // aspectRatio: 1,
+        // inset: 10,
         x: {
             label: "Volume",
             labelAnchor: "center",
@@ -174,7 +191,7 @@ function barChart(data, min_price, max_price){
             labelAnchor:"top",
             label: "strike",
             grid: true,
-            padding: 0.1,
+            // padding: 0.1,
             tickSpacing: 50,
             reverse:true, 
             nice:true
@@ -240,13 +257,64 @@ function charts(pricePath, expPath, level_file, title){
 
         // sort data by strike
         data.sort((a, b) => a.strike - b.strike);
-        // Min Expiration Date for line chart     
         d3.select("#p6").append(() => candleChart(pdata, title, green_line, red_line));
         
+        // function to update the dropdown 
+        function updateDropdown(data){
+            var exps = data.map(d => new Date(d.expiry));
+            var uniqueDate = [];
+            for (var i = 0; i < exps.length; i++){
+                if (!isDateInArray(exps[i], uniqueDate)){
+                    uniqueDate.push(exps[i]);
+                }
+            };
+            uniqueDate.sort((a, b) => a - b);
+            exp_dropdown.selectAll("option").remove();
+            uniqueDate.forEach(function(exp) {
+                exp_dropdown.append("option").text(exp.toDateString()).property("value", exp);
+            });
+            return uniqueDate;
+        }
 
-        barChart(data, min_price, max_price);
+        // function to update the plot
+        function updatePlot(exp) {
+            var filteredData = data.filter(d => d.expiry.getTime() === exp.getTime());
+            // console.log(filteredData)
+            d3.select("#p7-1").selectAll("*").remove();
+            d3.select("#p7-2").selectAll("*").remove();
+            d3.select("#p7-3").selectAll("*").remove();
+            d3.select("#p7-4").selectAll("*").remove();
+            
+            barChart(filteredData, min_price, max_price);
 
-        // Plotly.newPlot('p8', lineChart(data));
+        }
+
+        // Function to handle the change event
+        function handleChange(event) {
+            var exp = new Date(this.value);
+            updatePlot(exp);
+        }
+
+        // update the plot
+        var ud = updateDropdown(data);
+        // update the plot with the first date in the uniqueDate array
+        updatePlot(ud[0]);
+        // add event listener to the dropdown
+        exp_dropdown.on("change", handleChange);
+
+
+        
+
+
+        // // update the plot
+        // updateDropdown(data);
+        // updatePlot(data[0].expiry);
+        // // add event listener to the dropdown
+        // exp_dropdown.on("change", function() {
+        //     var exp = new Date(this.value);
+        //     updatePlot(exp);
+        // });
+
         }).catch(function(error) {
         console.log(error);
         });
@@ -257,7 +325,7 @@ function charts(pricePath, expPath, level_file, title){
     });}).catch(function(error){
         console.log(error);
     });
-}
+};
 
 
 
@@ -313,3 +381,34 @@ function chartVXX(folder){
 }
 
 chartSPY('../data');
+
+
+
+
+// // Append Unique Expiration Dates to the dropdown 
+// var exps = data.map(d => new Date(d.expiry));
+// var uniqueDate = [];
+// for (var i = 0; i < exps.length; i++){
+//     if (!isDateInArray(exps[i], uniqueDate)){
+//         uniqueDate.push(exps[i]);
+//     }
+// };
+// uniqueDate.sort((a, b) => a - b);
+// exp_dropdown.selectAll("option").remove();
+// // Append the unique dates to the dropdown
+// uniqueDate.forEach(function(date) {
+//     exp_dropdown.append("option").text(date).property("value", date);
+// });
+
+// // Update the plot when the dropdown changes
+// exp_dropdown.on("change", function() {
+// // Filter the data by the selected date
+// var filteredData = data.filter(d => d.expiry === new Date(this.value));
+// console.log(filteredData);
+// barChart(filteredData, min_price, max_price);
+// });
+
+
+// // Filter the data by the first date in the uniqueDate array
+// var filteredData = data.filter(d => d.expiry === uniqueDate[0]);
+// barChart(filteredData, min_price, max_price);

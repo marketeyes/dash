@@ -55,12 +55,8 @@ const columnDefsLottos = [
       sortable: true,
       headerName: 'Expiration',
       valueFormatter: params => params.value, // Simplified function for identity transform
-      // Removed commented-out pinning options
-      lockPinned: true,
-      cellClass: 'lock-pinned',
       maxWidth: 125,
       hide:false,
-      pinned: "left",
     },
     {
       field: 'lastprice',

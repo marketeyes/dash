@@ -139,9 +139,9 @@ d3.csv("../data/prices/close.csv").then(function(price_data) {
                     plot_bgcolor: 'rgba(0,0,0,0)',
                     
 
-                    margin: {l:50,r: 25,b: 90,t: 50,pad: 1}, 
+                    margin: {l:50,r: 50,b: 90,t: 50,pad: 1}, 
                 };
-                Plotly.newPlot('plot_area', traces, layout, {staticPlot: false, responsive: true, displayModeBar: false});
+                Plotly.newPlot('plot_area', traces, layout, {staticPlot: true, responsive: true, displayModeBar: false});
             } // updatePlot function
 
             // Create a function to update the side panel

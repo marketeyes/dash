@@ -19,8 +19,8 @@ function candleChart(data, title, gl, rl){
     // set flip to the last close
     const candles = Plot.plot({
         // inset: 10,
-        width: Math.max(800, window.innerWidth),
-        height: Math.min(600, window.innerHeight),
+        width: Math.max(400, window.innerWidth),
+        height: Math.min(400, window.innerHeight),
         marginLeft: 50,
         marginRight: 25,
         x: {
@@ -91,7 +91,7 @@ function barChart(data, uqs){
         },
         y: {
             labelAnchor:"top",
-            label: "",
+            label: "Strike",
             grid: true,
             padding: bar_padding, 
             tickSpacing: 50,
@@ -110,7 +110,7 @@ function barChart(data, uqs){
             Plot.dot(data, Plot.pointerY({x: "call_oi", y: "strike", stroke: "red"})),
             Plot.dot(data, Plot.pointerY({x: "put_oi", y: "strike", stroke: "red"})),
             Plot.ruleY(data, Plot.pointerY({px: "call_oi", y: "strike", stroke: "red"})),
-            Plot.text(data, Plot.pointerY({px: "call_oi", py: "strike", dy: -17, frameAnchor: "top-right", fontVariant: "tabular-nums", text: (d) => [`Strike: ${d.strike}`, `Open Interest: ${niceFormat(d.call_oi + (-1 * d.put_oi))}`].join("   ")}))
+            Plot.text(data, Plot.pointerY({px: "call_oi", py: "strike", dy: -17, frameAnchor: "top-right", fontVariant: "tabular-nums", text: (d) => [`Strike: \$${d.strike}`, `Open Interest: ${niceFormat(d.call_oi + (-1 * d.put_oi))}`].join("   ")}))
             ]
         });
 
@@ -133,7 +133,7 @@ function barChart(data, uqs){
         },
         y: {
             labelAnchor:"top",
-            label: "",
+            label: "Strike",
             grid: true,
             padding: bar_padding, 
             tickSpacing: 50,
@@ -149,7 +149,7 @@ function barChart(data, uqs){
             Plot.dot(data, Plot.pointerY({x: "call_volume", y: "strike", stroke: "red"})),
             Plot.dot(data, Plot.pointerY({x: "put_volume", y: "strike", stroke: "red"})),
             Plot.ruleY(data, Plot.pointerY({px: "call_volume", y: "strike", stroke: "red"})),
-            Plot.text(data, Plot.pointerY({px: "call_volume", py: "strike", dy: -17, frameAnchor: "top-right", fontVariant: "tabular-nums", text: (d) => [`Strike: ${d.strike}`, `Volume: ${niceFormat(d.call_volume +(-1 * d.put_volume) )}`].join("   ")}))
+            Plot.text(data, Plot.pointerY({px: "call_volume", py: "strike", dy: -17, frameAnchor: "top-right", fontVariant: "tabular-nums", text: (d) => [`Strike: \$${d.strike}`, `Volume: ${niceFormat(d.call_volume +(-1 * d.put_volume) )}`].join("   ")}))
             ]
         });
         
@@ -174,7 +174,7 @@ function barChart(data, uqs){
             },
             y: {
                 labelAnchor:"top",
-                label: "",
+                label: "Strike",
                 grid: true,
                 padding: bar_padding, 
                 tickSpacing: 50,
@@ -189,7 +189,7 @@ function barChart(data, uqs){
                 // Plot.crosshair(data, {x: "gamma", y: "strike", textFill:'black'}),
                 Plot.dot(data, Plot.pointerY({x: "gamma", y: "strike", stroke: "red"})),
                 Plot.ruleY(data, Plot.pointerY({px: "gamma", y: "strike", stroke: "red"})),
-                Plot.text(data, Plot.pointerY({px: "gamma", py: "strike", dy: -17, frameAnchor: "top-right", fontVariant: "tabular-nums", text: (d) => [`Strike: ${d.strike}`, `Exposure: ${niceFormat(d.gamma)}`].join("   ")}))
+                Plot.text(data, Plot.pointerY({px: "gamma", py: "strike", dy: -17, frameAnchor: "top-right", fontVariant: "tabular-nums", text: (d) => [`Strike: \$${d.strike}`, `Exposure: \$${niceFormat(d.gamma)}`].join("   ")}))
             ]
         });
 
@@ -211,7 +211,7 @@ function barChart(data, uqs){
         },
         y: {
             labelAnchor:"top",
-            label: "",
+            label: "Strike",
             grid: true,
             padding: bar_padding, 
             tickSpacing: 50,
@@ -226,7 +226,7 @@ function barChart(data, uqs){
             Plot.barX(data,{y: "strike", x: "vanna",fill: d => d.vanna > 0 ? "green" : "red",}),
             Plot.dot(data, Plot.pointerY({x: "vanna", y: "strike", stroke: "red"})),
             Plot.ruleY(data, Plot.pointerY({px: "vanna", y: "strike", stroke: "red"})),
-            Plot.text(data, Plot.pointerY({px: "vanna", py: "strike", dy: -17, frameAnchor: "top-right", fontVariant: "tabular-nums", text: (d) => [`Strike: ${d.strike}`, `Exposure: ${niceFormat(d.vanna)}`].join("   ")}))
+            Plot.text(data, Plot.pointerY({px: "vanna", py: "strike", dy: -17, frameAnchor: "top-right", fontVariant: "tabular-nums", text: (d) => [`Strike: \$${d.strike}`, `Exposure: \$${niceFormat(d.vanna)}`].join("   ")}))
             ]
         });
     

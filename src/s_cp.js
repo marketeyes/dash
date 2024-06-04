@@ -133,6 +133,7 @@ const grid_definitions = [
                     },
                     // cellStyle: function(params) {return params.node.data.call_vol_pct_chng > 0 ? {'color': 'green'} : {'color': 'red'};},
                     maxWidth: 160,
+                    hide:true, 
                 },
                 {
                   columnGroupShow: 'open', 
@@ -147,6 +148,7 @@ const grid_definitions = [
                     },
                     // cellStyle: function(params) {return params.node.data.put_vol_pct_chng > 0 ? {'color': 'green'} : {'color': 'red'};}
                     //maxWidth: 100,
+                    hide:true,
                 },
                 {
                   columnGroupShow: 'open', 
@@ -272,6 +274,7 @@ const grid_definitions = [
             // cellStyle: function(params) {return params.node.data.call_oi_pct_chng > 0 ? {'color': 'green'} : {'color': 'red'};},
             //maxWidth: 100,
             //maxWidth: 95,
+            hide:true, 
           },
           {
             columnGroupShow: 'open', 
@@ -289,6 +292,7 @@ const grid_definitions = [
             },
             // cellStyle: function(params) {return params.node.data.put_oi_pct_chng > 0 ? {'color': 'green'} : {'color': 'red'};},
             //maxWidth: 95,
+            hide:true,
           },
           {
             columnGroupShow: 'open', 

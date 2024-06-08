@@ -44,8 +44,9 @@ d3.csv("../data/prices/close.csv").then(function(price_data) {
                 var closeData = price_data.filter(d => d[stock.toUpperCase()]);
                 var filteredData = data.filter(d => d.stock === stock);
                 var last_close = closeData[closeData.length - 1][stock.toUpperCase()];
-                var last_close_up = Number(last_close) + 0.5;
+                var last_close_up = Number(last_close) + 1.5;
                 var last_close_down = Number(last_close) - 0.5;
+                console.log(last_close);
 
                 var trace1 = {
                     // x: filteredData.map(d => d.expiry),
@@ -106,7 +107,8 @@ d3.csv("../data/prices/close.csv").then(function(price_data) {
                     }
                   ];
 
-                var traces = [trace1, trace2, trace4, trace3];
+                // var traces = [trace1, trace2, trace4, trace3];
+                var traces = [trace1, trace2,  trace3];
                 var layout = {
                     title: '',
                     xaxis: {
@@ -141,7 +143,7 @@ d3.csv("../data/prices/close.csv").then(function(price_data) {
 
                     margin: {l:50,r: 50,b: 90,t: 50,pad: 1}, 
                 };
-                Plotly.newPlot('plot_area', traces, layout, {staticPlot: true, responsive: true, displayModeBar: false});
+                Plotly.newPlot('plot_area', traces, layout, {staticPlot: false, responsive: true, displayModeBar: false});
             } // updatePlot function
 
             // Create a function to update the side panel

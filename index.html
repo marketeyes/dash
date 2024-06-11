@@ -60,44 +60,24 @@
       </nav>
 
     <!-- Page Header -->
-    <div id="section1" class="page-header container-fluid py-5 bg-dark text-center rounded text-white", style="padding:15%;">
-        <h1>MarketEyes</h1>
-         <!-- links to the pages -->
-         <div class="container-fluid">
-          <p>
-            <a class="btn btn-primary mb-1" data-bs-toggle="collapse" href="#About" role="button">
-              About
-            </a>
-            <a class="btn btn-primary mb-1" data-bs-toggle="collapse" href="#about_OI" role="button">
-              Flows
-            </a>
-            <button class="btn btn-primary mb-1" type="button" data-bs-toggle="collapse" data-bs-target="#about_Volume">
-              Lottos
-            </button>
-          </p>
-          <div class="collapse" id="About">
-            <div class="card card-body text-black">
-              <h1>MarketEyes</h1>
-              <p>MarketEyes is a financial data visualization tool that provides a comprehensive view of the stock market. It is designed to help traders and investors make informed decisions by providing real-time data on stock prices, volume, and options flows. MarketEyes uses advanced data analytics and visualization techniques to present complex financial data in an easy-to-understand format. The platform is designed to be user-friendly and intuitive, making it easy for traders and investors to access the information they need to make smart investment decisions.</p>
-            </div>
+    <div id="section1" class="page-header container-fluid bg-dark text-center text-white", style="padding:1%;">
+      <!-- BUTTON LINKS  -->
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-3">
+            <a href="pages/overview.html" class="btn btn-primary">Overview</a>
           </div>
-          <div class="collapse" id="about_OI">
-            <div class="card card-body text-black">
-              <h1>Open Interest</h1>
-              <p>
-                Open Interest reflects the number of open contracts for a Stock at the end of each trading day. Values for OI are updated at 8:00 AM EST the following day, therefore the data is a lagging indicator of the previous day's activity.
-              </p>
-              <h1>Volume</h1>
-              <p>
-                Volume is the number of contracts traded in the current day, this includes both the buy and sell side of the trade. Therefore, a large amount of volume is indicitive of particular interest of a stock from a large fund or market player. 
-              </p>
-            </div>
-            <div class="collapse" id="about_Volume">
-              <div class="card card-body text-black">
-              </div>
-            </div>
+          <div class="col-sm-3">
+            <a href="pages/flows.html" class="btn btn-primary">Flows</a>
+          </div>
+          <div class="col-sm-3">
+            <a href="pages/contracts.html" class="btn btn-primary">Contracts</a>
+          </div>
+          <div class="col-sm-3">
+            <a href="pages/exp.html" class="btn btn-primary">Pricing In</a>
           </div>
         </div>
+       
     </div>  
 </body>
 <script src="src/s_cp.js"></script>

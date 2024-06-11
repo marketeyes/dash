@@ -1,7 +1,7 @@
 async function fetchStockData() {
     const response = await fetch('../data/contracts/all_cp.json');
     const data = await response.json();
-    console.log(data)
+    // console.log(data)
     return data;
   }
   

@@ -60,7 +60,6 @@
           </nav>
         
           <!-- CONTENT -->
-
           <!-- <button id="tape2" class="active-stocks-text m-0" onclick="active_volume_tickertape()">Active</button> -->
         <div class="row">
           <div class="row">
@@ -74,7 +73,17 @@
           </div>
         </div>
         <!-- HIGLIGHTS -->
-        
+        <!-- FLOW PLOTS -->
+
+        <div class = "container-fluid bg-dark">
+          <div class="row g-0">
+            <div class="col-lg-6">
+              <div id="flow_plot" height="500" width="500" class="ag-theme-alpine-dark"></div>
+            </div>
+            <div class="col-lg-6">
+              <div id="flow_plot2" height="500" width="500" class="ag-theme-alpine-dark"></div>
+            </div>
+          </div>
 
         <!-- DROPDOWN MENU FOR SORTING VOLUME GRID -->
         <div id="section2" class="container-fluid p-1 bg-dark">
@@ -111,6 +120,7 @@
         </div>
     </body>
     <script src="../src/s_cp.js"></script>
+    <script src="../src/flow_plots.js"></script>
     <script src="../src/ticker_data.js"></script>
 </head>
     

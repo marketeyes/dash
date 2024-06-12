@@ -162,14 +162,33 @@ fetch(stock_cp_path).then((response) => response.json()).then(function(data) {
     }
 
     // Create an event listener for the dropdown
+    // call_flow_selector.on("change", function() {
+    //     var selected_key = d3.select(this).property("value");
+    //     update_plot(data, selected_key, selected_key);
+    // });
+
+    // put_flow_selector.on("change", function() {
+    //     var selected_key = d3.select(this).property("value");
+    //     update_plot(data, selected_key, selected_key);
+    // });
+
+    // Link Both Selectors to the same event listener
     call_flow_selector.on("change", function() {
         var selected_key = d3.select(this).property("value");
-        update_plot(data, selected_key, selected_key);
+        // replace call_ with put_ to get the corresponding put key
+        var put_key = selected_key.replace("call_", "put_");
+        update_plot(data, put_key, selected_key);
     });
 
     put_flow_selector.on("change", function() {
         var selected_key = d3.select(this).property("value");
-        update_plot(data, selected_key, selected_key);
+        // replace put_ with call_ to get the corresponding call key
+        var call_key = selected_key.replace("put_", "call_");
+        update_plot(data, selected_key, call_key);
     });
+
+    // Initialize the plot
+    update_plot(data, "call_prem_chng", "put_prem_chng");
+
 
 });

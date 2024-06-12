@@ -32,7 +32,7 @@ fetch(stock_cp_path).then((response) => response.json()).then(function(data) {
         }
     });
 
-    function top_10_BB(data, key1, key2){
+    function top_10_BB(data, key1, key2, top_n){
         data.forEach(function(d) {
             d.stock = d.stock.toUpperCase();
             d.key1 = +d[key1];
@@ -44,8 +44,8 @@ fetch(stock_cp_path).then((response) => response.json()).then(function(data) {
         // Top 10 bearish Flow
         var bearishFlow = data.sort((a, b) => b.key2 - a.key2).slice(0, 10);
         bearishFlow.forEach(function(d) {d.key2 = +d.key2;});
-        const max_bullish = d3.max(bullishFlow, d => d.key1);
-        const max_bearish = d3.max(bearishFlow, d => d.key2);
+        const max_bullish = d3.max(bullishFlow, d => d.key1) / 2;
+        const max_bearish = d3.max(bearishFlow, d => d.key2) / 2;
 
 
         const bullishBars = Plot.plot({
@@ -69,9 +69,9 @@ fetch(stock_cp_path).then((response) => response.json()).then(function(data) {
                     dx: -3,
                     fill: "white",
                     fontWeight: "bold",
-                    filter: d => d.key1 >= max_bullish
-                }
-                )
+                    filter: d => d.key1 >= max_bullish,
+                }),
+                Plot.text(bullishFlow, Plot.pointerY({px: key1, py: "stock", dy: -17, frameAnchor: "top-left", fontVariant: "tabular-nums", text: d => d.stock + " "+ d3.format("~s")(d[key1])}))
             ],
             y: { 
                 label: "", 
@@ -107,8 +107,9 @@ fetch(stock_cp_path).then((response) => response.json()).then(function(data) {
                     fill: "white", 
                     fontWeight: "bold",
                     filter: d => d.key2 >= max_bearish
-                }
-                )
+                }),
+                Plot.text(bearishFlow, Plot.pointerY({px: key2, py: "stock", dy: -17, frameAnchor: "top-right", fontVariant: "tabular-nums", text: d => d.stock + " "+ d3.format("~s")(d[key2])}))
+
             ],
             y: { 
                 label: "", 
@@ -133,23 +134,24 @@ fetch(stock_cp_path).then((response) => response.json()).then(function(data) {
         //     exp_dropdown.append("option").text(exp.toDateString()).property("value", exp);
         // });
     
-    var call_flow_selector = d3.select("#call-flow-selector").append("select");
     var put_flow_selector = d3.select("#put-flow-selector").append("select");
+    // var top_n_selector = d3.select("#call-flow-selector").append("select");
+    // make a slider for including the top n stocks
+    var range_slider = d3.select("#call-flow-selector").append("input").attr("type", "range").attr("min", 1).attr("max", 20).attr("value", 10);
     var keys = Object.keys(data[0]);
     keys.forEach(function(key) {
         // Exclude any keys with "_pct" in them
         if (key.includes("_pct")) {
             return;
         }
-
+        if (key.includes("avg")){
+            return;
+        }
         // Drop "call_" and "put_" from each of the keys; However we still need to keep them to create the 2 plots respectively
-        if (key.includes("call_")) {
-            call_flow_selector.append("option").text(key.replace("call_", "")).property("value", key);
-        } else if (key.includes("put_")) {
+        if (key.includes("put_")) {
             put_flow_selector.append("option").text(key.replace("put_", "")).property("value", key);
         }
-
-        // flow_selector.append("option").text(key).property("value", key);
+    // flow_selector.append("option").text(key).property("value", key);
     });
 
     // Create a function to update the plot when a new key is selected
@@ -172,23 +174,30 @@ fetch(stock_cp_path).then((response) => response.json()).then(function(data) {
     //     update_plot(data, selected_key, selected_key);
     // });
 
-    // Link Both Selectors to the same event listener
-    call_flow_selector.on("change", function() {
-        var selected_key = d3.select(this).property("value");
-        // replace call_ with put_ to get the corresponding put key
-        var put_key = selected_key.replace("call_", "put_");
-        update_plot(data, put_key, selected_key);
-    });
 
+    // Link Both Selectors to the same event listener
     put_flow_selector.on("change", function() {
         var selected_key = d3.select(this).property("value");
         // replace put_ with call_ to get the corresponding call key
         var call_key = selected_key.replace("put_", "call_");
-        update_plot(data, selected_key, call_key);
+        // get the value of the range slider
+        var top_n = range_slider.property("value");
+        console.log(top_n);
+        update_plot(data, selected_key, call_key, top_n);
     });
+    
+    // // Initialize the plot
+    // top_n = range_slider.property("value");
+    // update_plot(data, "call_prem_chng", "put_prem_chng", top_n);
 
-    // Initialize the plot
-    update_plot(data, "call_prem_chng", "put_prem_chng");
+    // Add an event listener for the range slider
+    range_slider.on("input", function() {
+        console.log("range slider input", range_slider.property("value"));
+        var selected_key = put_flow_selector.property("value");
+        var call_key = selected_key.replace("put_", "call_");
+        var top_n = range_slider.property("value");
+        update_plot(data, selected_key, call_key, top_n);
+    });
 
 
 });

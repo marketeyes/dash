@@ -199,4 +199,7 @@ fetch(stock_cp_path).then((response) => response.json()).then(function(data) {
     // Initialize the plot
     update_plot(data, "call_prem_chng", "put_prem_chng");
 
+    // Set the initial Flow dropdown to Premium Change
+    put_flow_selector.property("value", "put_prem_chng");
+
 });

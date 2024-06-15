@@ -44,9 +44,9 @@ d3.csv("../data/prices/close.csv").then(function(price_data) {
                 var closeData = price_data.filter(d => d[stock.toUpperCase()]);
                 var filteredData = data.filter(d => d.stock === stock);
                 var last_close = closeData[closeData.length - 1][stock.toUpperCase()];
-                var last_close_up = Number(last_close) + 1.5;
-                var last_close_down = Number(last_close) - 0.5;
-                console.log(last_close);
+                var last_close_up = Number(last_close) + 0;
+                var last_close_down = Number(last_close) - 0;
+                // console.log(last_close);
 
                 var trace1 = {
                     // x: filteredData.map(d => d.expiry),

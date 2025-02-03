@@ -95,39 +95,7 @@
             </div>
           </div>
         
-        <!-- DROPDOWN MENU FOR SORTING VOLUME GRID -->
-        <div id="section2" class="container-fluid p-1 bg-dark">
-            <!-- FLOWS HEADING TEXT -->
-            <h1 class="text-center text-white">Flows</h1>
-            <!-- DROPDOWN MENU FOR SORTING VOLUME GRID -->
-            <div class="text-center text-white mb-4", style="padding:0%;">
-              <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                  <div class="btn-group" role="group">
-                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        Volume
-                    </button>
-                      <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                        <li><a href="#" class="dropdown-item" onclick="getHighVolumeStocks()">🔥 2x Avg Vol</a></li>
-                        <li><a href="#" class="dropdown-item" onclick="sortcallvol()">Sort Call Vol</a></li>
-                        <li><a href="#" class="dropdown-item" onclick="sortputvol()">Sort Put Vol</a></li>
-                      </ul>
-                  </div>
-                  <div class="btn-group" role="group">
-                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        Open Interest
-                    </button>
-                      <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                        <li><a href="#" class="dropdown-item" onclick="sortcalloi()">Sort Call OI</a></li>
-                        <li><a href="#" class="dropdown-item" onclick="sortputoi()">Sort Put OI</a></li>
-                      </ul>
-                  </div>
-                  <button type="button" class="btn btn-primary" onclick="resetVolume()">Reset</button>
-            </div>
-          </div>
-          <div class="row">    
-              <div id="volume_grid" style="height: 900px; width: 100%; padding-right:5%;" class="ag-theme-alpine-dark" style="flex: 1 1 auto"></div>
-          </div>
-        </div>
+
     </body>
     <!-- <script src="../src/s_cp.js"></script> -->
     <script src="../src/flow_plots.js"></script>

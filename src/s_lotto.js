@@ -54,10 +54,30 @@ const columnDefsLottos = [
       field: 'exp',
       sortable: true,
       headerName: 'Expiration',
+      filter: 'agDateColumnFilter',
+      filterParams: {
+        // Assuming 'exp' is stored in a format like 'YYYY-MM-DD'
+        comparator: function(filterLocalDateAtMidnight, cellValue) {
+          let dateAsString = cellValue;
+          if (dateAsString == null) return -1;
+          
+          let cellDate = new Date(dateAsString);
+          
+          // Now that both parameters are Date objects, we can compare
+          if (cellDate < filterLocalDateAtMidnight) {
+            return -1;
+          } else if (cellDate > filterLocalDateAtMidnight) {
+            return 1;
+          } else {
+            return 0;
+          }
+        }
+      },
       valueFormatter: params => params.value, // Simplified function for identity transform
       maxWidth: 125,
       hide:false,
     },
+      
     {
       field: 'lastprice',
       sortable: true,
@@ -171,16 +191,6 @@ const columnDefsLottos = [
       },
       hide: false,
       maxWidth: 100,
-    },
-    {
-      field: 'amnt',
-      headerName: '???',
-      sortable: true,
-      valueFormatter: function(params) {
-        return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      },
-      hide: false, 
-      maxWidth: 110,
     }
 
 ];
@@ -196,17 +206,6 @@ lottosGrid = agGrid.createGrid(document.querySelector('#contracts_grid'), cgrid)
 function reset_grid(){
     lottosGrid.setGridOption('rowData', []);
 }
-
-// Fetch data from the API
-function getPercentMovers(){
-    reset_grid();
-    fetch('../data/contracts/pct.json')
-        .then(response => response.json())
-        .then((cdata) => lottosGrid.setGridOption('rowData', cdata))
-        .then(() => lottosGrid.applyColumnState(
-            {state: [{colId:'pct_chg', sort:'desc'}], defaultState: {sort: null}})
-        );
-};
 
 function getVolumeMovers(){
   reset_grid();
@@ -239,4 +238,4 @@ function getVOIMovers(){
 }
 
 
-getPercentMovers();
+getVolumeMovers();
